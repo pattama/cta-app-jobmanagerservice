@@ -6,10 +6,10 @@
   "scripts": {
     "lint": "eslint --ignore-path .gitignore lib/**/*.js test/**/*.js",
     "test": "mocha -R spec --recursive test",
-    "codecoverage": "istanbul cover mocha -- -R spec --recursive test && opener ./coverage/lcov-report/index.html",
+    "codecoverage": "istanbul cover mocha -- -R spec --recursive test",
     "all": "npm run lint && npm run codecoverage",
     "gitlab-ci": "npm all",
-    "docs": "jsdoc2md \"lib/**/*.js\" > DOCUMENTATION.md && jsdoc --readme README.md lib -r -d docs && opener ./docs/index.html"
+    "docs": "jsdoc2md \"lib/**/*.js\" > DOCUMENTATION.md && jsdoc --readme README.md lib -r -d docs"
   },
   "engines": {
     "node": "4.2.2"
