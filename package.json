@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "http-status": "^0.2.3",
+    "lodash": "^4.14.0",
     "request": "^2.74.0",
     "request-promise-native": "^1.0.2"
   }

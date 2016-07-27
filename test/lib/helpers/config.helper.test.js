@@ -1,8 +1,8 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
-const config = require('../../config');
-const configHelper = require('../../lib/config.helper');
+const config = require('../../../config');
+const configHelper = require('../../../lib/helpers/config.helper');
 
 describe('config.helper', () => {
   describe('isCreate', () => {

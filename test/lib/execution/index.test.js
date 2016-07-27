@@ -1,5 +1,5 @@
 const execution = require('../../../lib/execution');
-const configHelper = require('../../../lib/config.helper');
+const configHelper = require('../../../lib/helpers/config.helper');
 const nock = require('nock');
 const httpStatus = require('http-status');
 const chai = require('chai');
@@ -13,20 +13,21 @@ const expect = chai.expect;
 
 describe('Execution', () => {
   describe('POST', () => {
-    it('should create successfully', () => {
+    it('should upsert successfully', () => {
       const sandbox = sinon.sandbox.create();
       sandbox.stub(configHelper, 'getExecutionUrl').returns('http://abc.com/execution');
+
+      // TODO: Talk with execution team about response data
       const testData = { test: 'test' };
       const nockExecutionPostReq = nock(configHelper.getExecutionUrl())
         .post('', testData)
-        .reply(httpStatus.CREATED, {
+        .reply(httpStatus.OK, {
           type: 'execution',
         });
 
       return expect(execution.sendPostRequest(testData))
         .to.be.fulfilled.and.then((result) => {
-          expect(result.statusCode).equal(httpStatus.CREATED);
-          expect(result.execution).eql({ type: 'execution' });
+          expect(result).eql({ type: 'execution' });
 
           expect(nockExecutionPostReq.isDone()).equal(true);
 

@@ -1,5 +1,5 @@
 const instances = require('../../../lib/instances');
-const configHelper = require('../../../lib/config.helper');
+const configHelper = require('../../../lib/helpers/config.helper');
 const nock = require('nock');
 const httpStatus = require('http-status');
 const chai = require('chai');
@@ -89,27 +89,34 @@ describe('Instances', () => {
     });
   });
   describe('getMatchingInstances', () => {
-    it('should throw error if no properties query', () => {
-      const sandbox = sinon.sandbox.create();
-      sandbox.stub(configHelper, 'getInstancesUrl').returns('http://abc.com/instances');
-      const testData = { };
-
-      return expect(instances.getMatchingInstances(testData))
-        .to.be.rejected.and.then((reason) => {
-          expect(reason.err).to.be.not.null;
-          sandbox.restore();
-        });
-    });
+    // it('should throw error if no properties query', () => {
+    //   const sandbox = sinon.sandbox.create();
+    //   sandbox.stub(configHelper, 'getInstancesUrl').returns('http://abc.com/instances');
+    //   const testData = { };
+    //
+    //   return expect(instances.getMatchingInstances(testData))
+    //     .to.be.rejected.and.then((reason) => {
+    //       expect(reason.err).to.be.not.null;
+    //       sandbox.restore();
+    //     });
+    // });
     it('should get successfully if there are any property query', () => {
       const sandbox = sinon.sandbox.create();
       sandbox.stub(configHelper, 'getInstancesUrl').returns('http://abc.com/instances');
-      const testData = { field: 'test' };
+      const matchingData = {
+        type: 'physical',
+        properties: [
+          {
+            name: 'testname1',
+            value: 'testvalue1',
+          },
+        ],
+      };
       const nockInstancesGetReq = nock(configHelper.getInstancesUrl())
-        .get('/matchingInstances')
-        .query({field: 'test'})
-        .reply(httpStatus.OK, ['hostname']);
+        .post('/matchingInstances', matchingData)
+        .reply(httpStatus.OK, ['hostname1', 'hostname2']);
 
-      return expect(instances.getMatchingInstances(testData))
+      return expect(instances.getMatchingInstances(matchingData))
         .to.be.fulfilled.and.then((result) => {
           expect(result.statusCode).equal(httpStatus.OK);
           expect(result.instances).to.be.an('array');
@@ -117,5 +124,5 @@ describe('Instances', () => {
           sandbox.restore();
         });
     });
-  })
+  });
 });
