@@ -9,7 +9,7 @@ chai.use(chaiAsPromised);
 const CementHelperMock = require('../../../mocks/cementHelper');
 const ContextMock = require('../../../mocks/context');
 
-const JobManagerCreation = require('../../../../lib/bricks/jobmanagercreation');
+const JobManagerCreation = require('../../../../lib/bricks/jobmanager_creation');
 
 describe('JobManagerCreation.validate', () => {
   let jobManager;

@@ -14,7 +14,7 @@ const instancesRest = require('../../../../lib/httprequest/instances');
 
 const Instance = require('../../../../lib/objects/instance');
 
-const JobManagerCreation = require('../../../../lib/bricks/jobmanagercreation');
+const JobManagerCreation = require('../../../../lib/bricks/jobmanager_creation');
 
 const cementHelperMock = new CementHelperMock();
 
