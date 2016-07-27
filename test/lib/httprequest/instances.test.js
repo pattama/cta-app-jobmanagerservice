@@ -1,11 +1,13 @@
 'use strict';
 
-const instances = require('../../../lib/instances');
-const configHelper = require('../../../lib/helpers/config.helper');
 const nock = require('nock');
 const httpStatus = require('http-status');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+
+const instances = require('../../../lib/httprequest/instances');
+const configHelper = require('../../../lib/helpers/config.helper');
+const Instance = require('../../../lib/objects/instance');
 
 const sinon = require('sinon');
 
@@ -46,7 +48,10 @@ describe('Instances', () => {
       };
       const nockInstancesGetReq = nock(configHelper.getInstancesUrl())
         .post('/matchingInstances', matchingData)
-        .reply(httpStatus.OK, ['hostname1', 'hostname2']);
+        .reply(httpStatus.OK, [
+          new Instance({ hostname: 'hostname1' }),
+          new Instance({ hostname: 'hostname2' }),
+        ]);
 
       return expect(instances.getMatchingInstances(matchingData))
         .to.be.fulfilled.and.then((result) => {

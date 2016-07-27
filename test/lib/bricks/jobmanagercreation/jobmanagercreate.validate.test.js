@@ -5,24 +5,18 @@ const expect = chai.expect;
 
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
-// const Scenario = require('../../../lib/objects/scenario');
 
-const EventEmitter = require('events');
+const CementHelperMock = require('../../../mocks/cementHelper');
+const ContextMock = require('../../../mocks/context');
 
-const JobManager = require('../../../lib');
+const JobManagerCreation = require('../../../../lib/bricks/jobmanagercreation');
 
-class MockContext extends EventEmitter {
-  constructor(context) {
-    super();
-    this.data = context.data;
-  }
-}
-
-describe('JobManager.validate', () => {
+describe('JobManagerCreation.validate', () => {
   let jobManager;
+  const cementHelperMock = new CementHelperMock();
 
   before(() => {
-    jobManager = new JobManager({}, { name: 'mock' });
+    jobManager = new JobManagerCreation(cementHelperMock, { name: 'mock' });
   });
 
   it('should have correct properties', (done) => {
@@ -38,13 +32,11 @@ describe('JobManager.validate', () => {
       scheduled: true,
     };
 
-    const contextData = new MockContext({
-      data: {
-        payload: scenarioData,
-        nature: {
-          type: 'testtype',
-          quality: 'testquality',
-        },
+    const contextData = new ContextMock(cementHelperMock, {
+      payload: scenarioData,
+      nature: {
+        type: 'testtype',
+        quality: 'testquality',
       },
     });
 

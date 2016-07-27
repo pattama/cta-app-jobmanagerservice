@@ -6,28 +6,26 @@ const sinon = require('sinon');
 
 require('sinon-as-promised');
 
-const executionRest = require('../../../lib/execution');
-const instancesRest = require('../../../lib/instances');
+const CementHelperMock = require('../../../mocks/cementHelper');
+const ContextMock = require('../../../mocks/context');
 
-const EventEmitter = require('events');
+const executionRest = require('../../../../lib/httprequest/executions');
+const instancesRest = require('../../../../lib/httprequest/instances');
 
-const JobManager = require('../../../lib');
+const Instance = require('../../../../lib/objects/instance');
 
-class MockContext extends EventEmitter {
-  constructor(context) {
-    super();
-    this.data = context.data;
-  }
-}
+const JobManagerCreation = require('../../../../lib/bricks/jobmanagercreation');
 
-describe('JobManager.process', () => {
-  let jobManager;
+const cementHelperMock = new CementHelperMock();
+
+describe('JobManagerCreation.process', () => {
+  let jobManagerCreation;
   let sandbox;
   let mockExecutionRest;
   let mockInstancesRest;
 
   beforeEach(() => {
-    jobManager = new JobManager({}, { name: 'mock' });
+    jobManagerCreation = new JobManagerCreation(cementHelperMock, { name: 'mock' });
     sandbox = sinon.sandbox.create();
 
     mockExecutionRest = sandbox.mock(executionRest);
@@ -41,7 +39,7 @@ describe('JobManager.process', () => {
     sandbox.restore();
   });
 
-  it('should run process correctly', (done) => {
+  it('should run process correctly', () => {
     const scenarioData = {
       id: '1111111111',
       name: 'testScenario',
@@ -112,10 +110,14 @@ describe('JobManager.process', () => {
       properties: scenarioData.configuration.properties,
     };
 
-    const responseInstances = ['instance1', 'instance2', 'instance3'];
+    const responseInstances = [
+      new Instance({ hostname: 'instance1' }),
+      new Instance({ hostname: 'instance2' }),
+      new Instance({ hostname: 'instance3' }),
+    ];
 
     mockExecutionRest
-      .expects('sendPostRequest')
+      .expects('upsertExecutions')
       .withArgs(createdExecution)
       .once()
       .resolves(responseExecution);
@@ -130,26 +132,30 @@ describe('JobManager.process', () => {
     completedExecution.instances = [responseInstances[0]];
 
     mockExecutionRest
-      .expects('sendPostRequest')
+      .expects('upsertExecutions')
       .withArgs(completedExecution)
       .once()
       .resolves(completedExecution);
 
-    const contextData = new MockContext({
-      data: {
-        payload: scenarioData,
-        nature: {
-          type: 'testtype',
-          quality: 'testquality',
-        },
+    const contextData = new ContextMock(cementHelperMock, {
+      payload: scenarioData,
+      nature: {
+        type: 'testtype',
+        quality: 'testquality',
       },
     });
 
-    contextData.on('done', (name, result) => {
-      expect(name).equal('mock');
-      expect(result).eql(completedExecution);
-      done();
-    });
-    jobManager.process(contextData);
+    const publishSpy = sandbox.spy(jobManagerCreation.context, 'publish');
+
+    return expect(jobManagerCreation.process(contextData))
+      .to.be.fulfilled.and.then(() => {
+        expect(jobManagerCreation.context.data).eql({
+          payload: {
+            queue: completedExecution.instances[0].hostname,
+            message: completedExecution,
+          },
+        });
+        expect(publishSpy.calledOnce).eql(true);
+      });
   });
 });

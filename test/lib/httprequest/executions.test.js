@@ -1,6 +1,6 @@
 'use strict';
 
-const execution = require('../../../lib/execution');
+const executions = require('../../../lib/httprequest/executions');
 const configHelper = require('../../../lib/helpers/config.helper');
 const nock = require('nock');
 const httpStatus = require('http-status');
@@ -33,7 +33,7 @@ describe('Execution', () => {
           type: 'execution',
         });
 
-      return expect(execution.sendPostRequest(testData))
+      return expect(executions.upsertExecutions(testData))
         .to.be.fulfilled.and.then((result) => {
           expect(result).eql({ type: 'execution' });
 
@@ -48,7 +48,7 @@ describe('Execution', () => {
         .post('', testData)
         .reply(httpStatus.INTERNAL_SERVER_ERROR);
 
-      return expect(execution.sendPostRequest(testData))
+      return expect(executions.upsertExecutions(testData))
         .to.be.rejected.and.then((reason) => {
           expect(reason.statusCode).equal(httpStatus.INTERNAL_SERVER_ERROR);
 
@@ -63,7 +63,7 @@ describe('Execution', () => {
         .post('', testData)
         .reply(httpStatus.BAD_REQUEST);
 
-      return expect(execution.sendPostRequest(testData))
+      return expect(executions.upsertExecutions(testData))
         .to.be.rejected.and.then((reason) => {
           expect(reason.statusCode).equal(httpStatus.BAD_REQUEST);
 
@@ -78,7 +78,7 @@ describe('Execution', () => {
         .post('', testData)
         .replyWithError({ code: 'ECONNRESET' });
 
-      return expect(execution.sendPostRequest(testData))
+      return expect(executions.upsertExecutions(testData))
         .to.be.rejected.and.then((reason) => {
           expect(reason.code).equal('ECONNRESET');
 
