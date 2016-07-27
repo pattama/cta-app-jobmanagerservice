@@ -58,8 +58,19 @@ describe('config.helper', () => {
       const sandbox = sinon.sandbox.create();
       const executionUrl = 'http://example.com/execution';
 
-      sandbox.stub(config, 'executionurl', executionUrl);
-      expect(getExecutionUrl()).equal(config.executionurl);
+      sandbox.stub(config, 'executionUrl', executionUrl);
+      expect(getExecutionUrl()).equal(config.executionUrl);
+    });
+  });
+
+  describe('getInstancesUrl', () => {
+    const getInstancesUrl = configHelper.getInstancesUrl;
+    it('should get execution url from config', () => {
+      const sandbox = sinon.sandbox.create();
+      const instancesUrl = 'http://example.com/instances';
+
+      sandbox.stub(config, 'instancesUrl', instancesUrl);
+      expect(getInstancesUrl()).equal(config.instancesUrl);
     });
   });
 });

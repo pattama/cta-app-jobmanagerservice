@@ -9,5 +9,6 @@ module.exports = {
     type: '',
     quality: '',
   },
-  executionurl: '',
+  executionUrl: '',
+  instancesUrl: '',
 };
