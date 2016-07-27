@@ -1,3 +1,5 @@
+'use strict';
+
 const execution = require('../../../lib/execution');
 const configHelper = require('../../../lib/helpers/config.helper');
 const nock = require('nock');
@@ -12,9 +14,15 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 describe('Execution', () => {
+  let sandbox;
   describe('POST', () => {
+    beforeEach(() => {
+      sandbox = sinon.sandbox.create();
+    });
+    afterEach(() => {
+      sandbox.restore();
+    });
     it('should upsert successfully', () => {
-      const sandbox = sinon.sandbox.create();
       sandbox.stub(configHelper, 'getExecutionUrl').returns('http://abc.com/execution');
 
       // TODO: Talk with execution team about response data
@@ -30,13 +38,10 @@ describe('Execution', () => {
           expect(result).eql({ type: 'execution' });
 
           expect(nockExecutionPostReq.isDone()).equal(true);
-
-          sandbox.restore();
         });
     });
 
     it('should handle httpStatus 500+ error', () => {
-      const sandbox = sinon.sandbox.create();
       sandbox.stub(configHelper, 'getExecutionUrl').returns('http://abc.com/execution');
       const testData = { test: 'test' };
       const nockExecutionPostReq = nock(configHelper.getExecutionUrl())
@@ -48,13 +53,10 @@ describe('Execution', () => {
           expect(reason.statusCode).equal(httpStatus.INTERNAL_SERVER_ERROR);
 
           expect(nockExecutionPostReq.isDone()).equal(true);
-
-          sandbox.restore();
         });
     });
 
     it('should handle httpStatus 400+ error', () => {
-      const sandbox = sinon.sandbox.create();
       sandbox.stub(configHelper, 'getExecutionUrl').returns('http://abc.com/execution');
       const testData = { test: 'test' };
       const nockExecutionPostReq = nock(configHelper.getExecutionUrl())
@@ -66,13 +68,10 @@ describe('Execution', () => {
           expect(reason.statusCode).equal(httpStatus.BAD_REQUEST);
 
           expect(nockExecutionPostReq.isDone()).equal(true);
-
-          sandbox.restore();
         });
     });
 
     it('should handle error', () => {
-      const sandbox = sinon.sandbox.create();
       sandbox.stub(configHelper, 'getExecutionUrl').returns('http://abc.com/execution');
       const testData = { test: 'test' };
       const nockExecutionPostReq = nock(configHelper.getExecutionUrl())
@@ -84,8 +83,6 @@ describe('Execution', () => {
           expect(reason.code).equal('ECONNRESET');
 
           expect(nockExecutionPostReq.isDone()).equal(true);
-
-          sandbox.restore();
         });
     });
   });
