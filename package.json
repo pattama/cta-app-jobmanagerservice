@@ -49,6 +49,9 @@
     "http-status": "^0.2.3",
     "lodash": "^4.14.0",
     "request": "^2.74.0",
-    "request-promise-native": "^1.0.2"
+    "request-promise-native": "^1.0.2",
+    "cta-brick": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick.git",
+    "cta-logger": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-logger.git",
+    "cta-tools": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-tools.git"
   }
 }
