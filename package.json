@@ -40,17 +40,16 @@
     "sinon": "^1.17.4",
     "sinon-as-promised": "^4.0.2"
   },
-  "sourceDependencies": {
-    "cta-brick": "*",
-    "cta-logger": "*",
-    "cta-tools": "*"
-  },
   "dependencies": {
     "http-status": "^0.2.3",
     "lodash": "^4.14.0",
     "request": "^2.74.0",
     "cta-brick": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick.git",
     "cta-logger": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-logger.git",
-    "cta-tools": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-tools.git"
+    "cta-tools": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-tools.git",
+    "cta-flowcontrol": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-flowcontrol.git",
+    "cta-receiver": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-receiver.git",
+    "cta-sender": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-sender.git",
+    "cta-io": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-io.git"
   }
 }
