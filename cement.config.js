@@ -27,7 +27,7 @@ const config = {
         provider: {
           name: 'rabbitmq',
           options: {
-            url: 'amqp://localhost',
+            url: 'amqp://dtco-ctawbmd-dev-02.emea1.cis.trcloud',
           },
         },
       },
@@ -50,12 +50,28 @@ const config = {
           ],
         },
       ],
-      subscribe: [],
+      subscribe: [
+        {
+          topic: 'rabitmq',
+          data: [
+            {
+              nature: {
+                type: 'execution',
+                quality: 'creation',
+              },
+            },
+          ],
+        },
+      ],
     },
 //------------------------------------------------------------------------
     {
       name: 'jobmanager.creation',
       module: '../../../lib/bricks/jobmanager_creation',
+      properties: {
+        executionsUrl: '',
+        instancesUrl: '',
+      },
       subscribe: [
         {
           topic: 'jobmanager',
@@ -122,7 +138,7 @@ const config = {
         provider: {
           name: 'rabbitmq',
           options: {
-            url: 'amqp://localhost',
+            url: 'amqp://dtco-ctawbmd-dev-02.emea1.cis.trcloud',
           },
         },
       },
