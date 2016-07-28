@@ -9,6 +9,8 @@ chai.use(chaiAsPromised);
 const CementHelperMock = require('../../../mocks/cementHelper');
 const ContextMock = require('../../../mocks/context');
 
+const scenarioResources = require('../../../resources/scenarios');
+
 const JobManagerCreation = require('../../../../lib/bricks/jobmanager_creation');
 
 describe('JobManagerCreation.validate', () => {
@@ -20,17 +22,7 @@ describe('JobManagerCreation.validate', () => {
   });
 
   it('should have correct properties', (done) => {
-    const scenarioData = {
-      id: '1111111111',
-      name: 'testScenario',
-      description: 'Test scenario',
-      scopetested: '',
-      testsuites: [{ id: '1231231232', name: 'testTestSuite', applicationtested: '', parent: '' }],
-      configuration: { id: '1232131232', name: 'testConfig', targetmode: '', runmode: 'mono' },
-      pendingtimeout: 1000,
-      runningtimeout: 1000,
-      scheduled: true,
-    };
+    const scenarioData = scenarioResources.completedScenario;
 
     const contextData = new ContextMock(cementHelperMock, {
       payload: scenarioData,
