@@ -8,3 +8,10 @@
 ##You can change git remote point to your brick repo.
 - `git remote set-url origin [git url]` or deleting `.git` folder then do git init and set to repo.
 
+###config
+```
+{
+  executionsUrl: '',
+  instancesUrl: '',
+}
+```

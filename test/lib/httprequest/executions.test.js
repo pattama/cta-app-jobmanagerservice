@@ -1,7 +1,7 @@
 'use strict';
 
 const executions = require('../../../lib/httprequest/executions');
-const configHelper = require('../../../lib/helpers/config.helper');
+const configHelper = require('../../../lib/helpers/config_helper');
 const nock = require('nock');
 const httpStatus = require('http-status');
 const chai = require('chai');
@@ -23,11 +23,11 @@ describe('Execution', () => {
       sandbox.restore();
     });
     it('should upsert successfully', () => {
-      sandbox.stub(configHelper, 'getExecutionUrl').returns('http://abc.com/execution');
+      sandbox.stub(configHelper, 'getExecutionsUrl').returns('http://abc.com/execution');
 
       // TODO: Talk with execution team about response data
       const testData = { test: 'test' };
-      const nockExecutionPostReq = nock(configHelper.getExecutionUrl())
+      const nockExecutionPostReq = nock(configHelper.getExecutionsUrl())
         .post('', testData)
         .reply(httpStatus.OK, {
           type: 'execution',
@@ -42,9 +42,9 @@ describe('Execution', () => {
     });
 
     it('should handle httpStatus 500+ error', () => {
-      sandbox.stub(configHelper, 'getExecutionUrl').returns('http://abc.com/execution');
+      sandbox.stub(configHelper, 'getExecutionsUrl').returns('http://abc.com/execution');
       const testData = { test: 'test' };
-      const nockExecutionPostReq = nock(configHelper.getExecutionUrl())
+      const nockExecutionPostReq = nock(configHelper.getExecutionsUrl())
         .post('', testData)
         .reply(httpStatus.INTERNAL_SERVER_ERROR);
 
@@ -57,9 +57,9 @@ describe('Execution', () => {
     });
 
     it('should handle httpStatus 400+ error', () => {
-      sandbox.stub(configHelper, 'getExecutionUrl').returns('http://abc.com/execution');
+      sandbox.stub(configHelper, 'getExecutionsUrl').returns('http://abc.com/execution');
       const testData = { test: 'test' };
-      const nockExecutionPostReq = nock(configHelper.getExecutionUrl())
+      const nockExecutionPostReq = nock(configHelper.getExecutionsUrl())
         .post('', testData)
         .reply(httpStatus.BAD_REQUEST);
 
@@ -72,9 +72,9 @@ describe('Execution', () => {
     });
 
     it('should handle error', () => {
-      sandbox.stub(configHelper, 'getExecutionUrl').returns('http://abc.com/execution');
+      sandbox.stub(configHelper, 'getExecutionsUrl').returns('http://abc.com/execution');
       const testData = { test: 'test' };
-      const nockExecutionPostReq = nock(configHelper.getExecutionUrl())
+      const nockExecutionPostReq = nock(configHelper.getExecutionsUrl())
         .post('', testData)
         .replyWithError({ code: 'ECONNRESET' });
 
