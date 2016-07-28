@@ -50,9 +50,7 @@ describe('JobManagerCancellation.process', () => {
 
       mockExecutionRest
         .expects('getExecution')
-        .withArgs({
-          id: responseExecution.id,
-        })
+        .withArgs(responseExecution.id)
         .once()
         .resolves(responseExecution);
 

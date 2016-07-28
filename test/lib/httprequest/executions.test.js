@@ -18,7 +18,11 @@ const executionsResources = require('../../resources/executions');
 
 describe('Execution', () => {
   let sandbox;
-  const executionsUrl = 'http://abc.com/execution';
+  const executionsUrl = 'http://abc.com/executions';
+  const executionId = '1234567890';
+  // const query = {
+  //   id: '12345678',
+  // };
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
     sandbox.stub(configHelper, 'getExecutionsUrl').returns(executionsUrl);
@@ -29,15 +33,11 @@ describe('Execution', () => {
   describe('getExecution', () => {
     it('should get successfully', () => {
       const responseExecution = executionsResources.completedExecution;
-      const query = {
-        id: '12345678',
-      };
       const nockExecutionGetReq = nock(executionsUrl)
-        .get('')
-        .query(query)
+        .get(`/${executionId}`)
         .reply(httpStatus.OK, responseExecution);
 
-      return expect(executions.getExecution(query))
+      return expect(executions.getExecution(executionId))
         .to.be.fulfilled.and.then((result) => {
           expect(result).eql(responseExecution);
 
@@ -47,15 +47,11 @@ describe('Execution', () => {
 
     describe('Errors', () => {
       it('should handle error', () => {
-        const query = {
-          id: '12345678',
-        };
         const nockExecutionGetReq = nock(executionsUrl)
-          .get('')
-          .query(query)
+          .get(`/${executionId}`)
           .replyWithError({ code: 'ECONNRESET' });
 
-        return expect(executions.getExecution(query))
+        return expect(executions.getExecution(executionId))
           .to.be.rejected.and.then((reason) => {
             expect(reason.code).equal('ECONNRESET');
 
@@ -63,15 +59,11 @@ describe('Execution', () => {
           });
       });
       it('should handle httpStatus 500+ error', () => {
-        const query = {
-          id: '12345678',
-        };
         const nockExecutionGetReq = nock(executionsUrl)
-          .get('')
-          .query(query)
+          .get(`/${executionId}`)
           .reply(httpStatus.INTERNAL_SERVER_ERROR);
 
-        return expect(executions.getExecution(query))
+        return expect(executions.getExecution(executionId))
           .to.be.rejected.and.then((reason) => {
             expect(reason.statusCode).equal(httpStatus.INTERNAL_SERVER_ERROR);
 
@@ -79,15 +71,11 @@ describe('Execution', () => {
           });
       });
       it('should handle httpStatus 400+ error', () => {
-        const query = {
-          id: '12345678',
-        };
         const nockExecutionGetReq = nock(executionsUrl)
-          .get('')
-          .query(query)
+          .get(`/${executionId}`)
           .reply(httpStatus.BAD_REQUEST);
 
-        return expect(executions.getExecution(query))
+        return expect(executions.getExecution(executionId))
           .to.be.rejected.and.then((reason) => {
             expect(reason.statusCode).equal(httpStatus.BAD_REQUEST);
 
