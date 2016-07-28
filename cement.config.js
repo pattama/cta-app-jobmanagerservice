@@ -27,7 +27,7 @@ const config = {
         provider: {
           name: 'rabbitmq',
           options: {
-            url: 'amqp://dtco-ctawbmd-dev-02.emea1.cis.trcloud',
+            url: 'amqp://localhost',
           },
         },
       },
@@ -85,7 +85,7 @@ const config = {
     },
 //------------------------------------------------------------------------
 //    {
-//      name: 'jobmanager.cacellation',
+//      name: 'jobmanager.cancellation',
 //      module: './lib/bricks/jobmanagercancellation',
 //      subscribe: [
 //        {
@@ -122,7 +122,7 @@ const config = {
         provider: {
           name: 'rabbitmq',
           options: {
-            url: 'amqp://dtco-ctawbmd-dev-02.emea1.cis.trcloud',
+            url: 'amqp://localhost',
           },
         },
       },
