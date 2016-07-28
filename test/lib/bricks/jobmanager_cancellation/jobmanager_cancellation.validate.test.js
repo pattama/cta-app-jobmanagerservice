@@ -36,24 +36,6 @@ describe('JobManagerCancellation.validate', () => {
       expect(jobManager.validate(contextData))
         .to.be.fulfilled.and.notify(done);
     });
-
-    it('should reject if payload does not have executionid', () => {
-      const contextData = new ContextMock(cementHelperMock, {
-        payload: {
-          bug: executionResources.completedExecution.id,
-        },
-        nature: {
-          type: 'testtype',
-          quality: 'testquality',
-        },
-      });
-
-      return expect(jobManager.validate(contextData))
-        .to.be.rejected.and.then((reason) => {
-          expect(reason instanceof Error).equal(true);
-          expect(reason.message).equal('executionid field is required');
-        });
-    });
   });
   describe('WithExecutionObject', () => {
     it('should have correct properties', (done) => {
@@ -69,6 +51,26 @@ describe('JobManagerCancellation.validate', () => {
 
       expect(jobManager.validate(contextData))
         .to.be.fulfilled.and.notify(done);
+    });
+  });
+
+  describe('Errors', () => {
+    it('should reject if payload does not have executionid or execution', () => {
+      const contextData = new ContextMock(cementHelperMock, {
+        payload: {
+          bug: executionResources.completedExecution.id,
+        },
+        nature: {
+          type: 'testtype',
+          quality: 'testquality',
+        },
+      });
+
+      return expect(jobManager.validate(contextData))
+        .to.be.rejected.and.then((reason) => {
+          expect(reason instanceof Error).equal(true);
+          expect(reason.message).equal('executionid or execution field is required');
+        });
     });
   });
 });

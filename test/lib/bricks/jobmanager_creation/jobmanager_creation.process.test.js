@@ -11,6 +11,7 @@ const ContextMock = require('../../../mocks/context');
 
 const scenarioResources = require('../../../resources/scenarios');
 const executionsResources = require('../../../resources/executions');
+const usersResources = require('../../../resources/users');
 
 const executionRest = require('../../../../lib/httprequest/executions');
 const instancesRest = require('../../../../lib/httprequest/instances');
@@ -43,17 +44,15 @@ describe('JobManagerCreation.process', () => {
   });
 
   it('should run process correctly', () => {
-    const scenarioData = scenarioResources.completedScenario;
+    const scenario = scenarioResources.completedScenario;
     const responseExecution = executionsResources.completedExecution;
+    const user = usersResources.completedUser;
 
-    const createdExecution = {
-      scenario: scenarioData.id,
-      configuration: scenarioData.configuration,
-    };
+    const createdExecution = { scenario, user };
 
-    const matchingData = {
-      type: scenarioData.configuration.type,
-      properties: scenarioData.configuration.properties,
+    const matchingInstanceData = {
+      type: scenario.configuration.type,
+      properties: scenario.configuration.properties,
     };
 
     const responseInstances = [
@@ -70,7 +69,7 @@ describe('JobManagerCreation.process', () => {
 
     mockInstancesRest
       .expects('getMatchingInstances')
-      .withArgs(matchingData)
+      .withArgs(matchingInstanceData)
       .once()
       .resolves(responseInstances);
 
@@ -84,7 +83,7 @@ describe('JobManagerCreation.process', () => {
       .resolves(completedExecutionWithInstance);
 
     const contextData = new ContextMock(cementHelperMock, {
-      payload: scenarioData,
+      payload: { scenario, user },
       nature: {
         type: 'testtype',
         quality: 'testquality',

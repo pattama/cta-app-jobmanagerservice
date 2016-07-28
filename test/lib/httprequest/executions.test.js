@@ -18,9 +18,10 @@ const executionsResources = require('../../resources/executions');
 
 describe('Execution', () => {
   let sandbox;
+  const executionsUrl = 'http://abc.com/execution';
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
-    sandbox.stub(configHelper, 'getExecutionsUrl').returns('http://abc.com/execution');
+    sandbox.stub(configHelper, 'getExecutionsUrl').returns(executionsUrl);
   });
   afterEach(() => {
     sandbox.restore();
@@ -31,7 +32,7 @@ describe('Execution', () => {
       const query = {
         id: '12345678',
       };
-      const nockExecutionGetReq = nock(configHelper.getExecutionsUrl())
+      const nockExecutionGetReq = nock(executionsUrl)
         .get('')
         .query(query)
         .reply(httpStatus.OK, responseExecution);
@@ -49,7 +50,7 @@ describe('Execution', () => {
         const query = {
           id: '12345678',
         };
-        const nockExecutionGetReq = nock(configHelper.getExecutionsUrl())
+        const nockExecutionGetReq = nock(executionsUrl)
           .get('')
           .query(query)
           .replyWithError({ code: 'ECONNRESET' });
@@ -65,7 +66,7 @@ describe('Execution', () => {
         const query = {
           id: '12345678',
         };
-        const nockExecutionGetReq = nock(configHelper.getExecutionsUrl())
+        const nockExecutionGetReq = nock(executionsUrl)
           .get('')
           .query(query)
           .reply(httpStatus.INTERNAL_SERVER_ERROR);
@@ -81,7 +82,7 @@ describe('Execution', () => {
         const query = {
           id: '12345678',
         };
-        const nockExecutionGetReq = nock(configHelper.getExecutionsUrl())
+        const nockExecutionGetReq = nock(executionsUrl)
           .get('')
           .query(query)
           .reply(httpStatus.BAD_REQUEST);
@@ -100,7 +101,7 @@ describe('Execution', () => {
     it('should upsert successfully', () => {
       // TODO: Talk with execution team about response data
       const testData = { test: 'test' };
-      const nockExecutionPostReq = nock(configHelper.getExecutionsUrl())
+      const nockExecutionPostReq = nock(executionsUrl)
         .post('', testData)
         .reply(httpStatus.OK, {
           type: 'execution',
@@ -117,7 +118,7 @@ describe('Execution', () => {
     describe('Errors', () => {
       it('should handle httpStatus 500+ error', () => {
         const testData = { test: 'test' };
-        const nockExecutionPostReq = nock(configHelper.getExecutionsUrl())
+        const nockExecutionPostReq = nock(executionsUrl)
           .post('', testData)
           .reply(httpStatus.INTERNAL_SERVER_ERROR);
 
@@ -131,7 +132,7 @@ describe('Execution', () => {
 
       it('should handle httpStatus 400+ error', () => {
         const testData = { test: 'test' };
-        const nockExecutionPostReq = nock(configHelper.getExecutionsUrl())
+        const nockExecutionPostReq = nock(executionsUrl)
           .post('', testData)
           .reply(httpStatus.BAD_REQUEST);
 
@@ -145,7 +146,7 @@ describe('Execution', () => {
 
       it('should handle error', () => {
         const testData = { test: 'test' };
-        const nockExecutionPostReq = nock(configHelper.getExecutionsUrl())
+        const nockExecutionPostReq = nock(executionsUrl)
           .post('', testData)
           .replyWithError({ code: 'ECONNRESET' });
 

@@ -18,8 +18,10 @@ const expect = chai.expect;
 describe('Instances', () => {
   describe('getMatchingInstances', () => {
     let sandbox;
+    const instancesUrl = 'http://abc.com/instances';
     beforeEach(() => {
       sandbox = sinon.sandbox.create();
+      sandbox.stub(configHelper, 'getInstancesUrl').returns(instancesUrl);
     });
 
     afterEach(() => {
@@ -27,7 +29,6 @@ describe('Instances', () => {
     });
 
     it('should throw error if no properties query', () => {
-      sandbox.stub(configHelper, 'getInstancesUrl').returns('http://abc.com/instances');
       const testData = { };
 
       return expect(instances.getMatchingInstances(testData))
@@ -36,7 +37,6 @@ describe('Instances', () => {
         });
     });
     it('should get successfully if there are any property query', () => {
-      sandbox.stub(configHelper, 'getInstancesUrl').returns('http://abc.com/instances');
       const matchingData = {
         type: 'physical',
         properties: [
@@ -46,7 +46,7 @@ describe('Instances', () => {
           },
         ],
       };
-      const nockInstancesGetReq = nock(configHelper.getInstancesUrl())
+      const nockInstancesGetReq = nock(instancesUrl)
         .post('/matchingInstances', matchingData)
         .reply(httpStatus.OK, [
           new Instance({ hostname: 'hostname1' }),
@@ -63,7 +63,6 @@ describe('Instances', () => {
 
     describe('Errors', () => {
       it('should handle httpStatus 500+ error', () => {
-        sandbox.stub(configHelper, 'getInstancesUrl').returns('http://abc.com/instances');
         const matchingData = {
           type: 'physical',
           properties: [
@@ -73,7 +72,7 @@ describe('Instances', () => {
             },
           ],
         };
-        const nockExecutionPostReq = nock(configHelper.getInstancesUrl())
+        const nockExecutionPostReq = nock(instancesUrl)
           .post('/matchingInstances', matchingData)
           .reply(httpStatus.INTERNAL_SERVER_ERROR);
 
@@ -86,7 +85,6 @@ describe('Instances', () => {
       });
 
       it('should handle httpStatus 400+ error', () => {
-        sandbox.stub(configHelper, 'getInstancesUrl').returns('http://abc.com/instances');
         const matchingData = {
           type: 'physical',
           properties: [
@@ -96,7 +94,7 @@ describe('Instances', () => {
             },
           ],
         };
-        const nockExecutionPostReq = nock(configHelper.getInstancesUrl())
+        const nockExecutionPostReq = nock(instancesUrl)
           .post('/matchingInstances', matchingData)
           .reply(httpStatus.BAD_REQUEST);
 
@@ -109,7 +107,6 @@ describe('Instances', () => {
       });
 
       it('should handle error', () => {
-        sandbox.stub(configHelper, 'getInstancesUrl').returns('http://abc.com/instances');
         const matchingData = {
           type: 'physical',
           properties: [
@@ -119,7 +116,7 @@ describe('Instances', () => {
             },
           ],
         };
-        const nockExecutionPostReq = nock(configHelper.getInstancesUrl())
+        const nockExecutionPostReq = nock(instancesUrl)
           .post('/matchingInstances', matchingData)
           .replyWithError({ code: 'ECONNRESET' });
 
