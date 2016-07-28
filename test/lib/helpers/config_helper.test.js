@@ -20,17 +20,33 @@ describe('configHelper', () => {
       const testConfig = { executionsUrl };
       configHelper.setConfig(testConfig);
 
-      expect(configHelper.getExecutionsUrl()).equal(testConfig.executionsUrl);
+      expect(configHelper.getExecutionsUrl()).equal(executionsUrl);
+    });
+    it('should get execution url from config without / behind', () => {
+      const executionsUrl = 'http://example.com/executions';
+      const executionsUrlWithSlash = `${executionsUrl}/`;
+      const testConfig = { executionsUrl: executionsUrlWithSlash };
+      configHelper.setConfig(testConfig);
+
+      expect(configHelper.getExecutionsUrl()).equal(executionsUrl);
     });
   });
 
   describe('getInstancesUrl', () => {
-    it('should get instance url from config', () => {
+    it('should get instances url from config', () => {
       const instancesUrl = 'http://example.com/instances';
       const testConfig = { instancesUrl };
       configHelper.setConfig(testConfig);
 
-      expect(configHelper.getInstancesUrl()).equal(testConfig.instancesUrl);
+      expect(configHelper.getInstancesUrl()).equal(instancesUrl);
+    });
+    it('should get instances url from config without / behind', () => {
+      const instancesUrl = 'http://example.com/instances';
+      const instancesUrlWithSlash = `${instancesUrl}/`;
+      const testConfig = { instancesUrl: instancesUrlWithSlash };
+      configHelper.setConfig(testConfig);
+
+      expect(configHelper.getInstancesUrl()).equal(instancesUrl);
     });
   });
 });
