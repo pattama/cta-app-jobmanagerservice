@@ -69,8 +69,8 @@ const config = {
       name: 'jobmanager.creation',
       module: '../../../lib/bricks/jobmanager_creation',
       properties: {
-        executionsUrl: '',
-        instancesUrl: '',
+        executionsUrl: 'http://localhost:1337/executions',
+        instancesUrl: 'http://localhost:1337/instances',
       },
       subscribe: [
         {
@@ -92,7 +92,7 @@ const config = {
             {
               nature: {
                 type: 'execution',
-                quality: 'running',
+                quality: 'creation',
               },
             },
           ],
