@@ -11,7 +11,7 @@ const ContextMock = require('../../../mocks/context');
 
 const executionResources = require('../../../resources/executions');
 
-const JobManagerCancellation = require('../../../../lib/bricks/jobmanager_cancellation');
+const JobManagerCancellation = require('../../../../lib/bricks/jobmanager_cancelation');
 
 describe('JobManagerCancellation.validate', () => {
   let jobManager;

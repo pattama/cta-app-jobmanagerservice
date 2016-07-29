@@ -104,4 +104,11 @@ describe('Execution', () => {
       expect(execution.toJSON()).eql(executionFullData);
     });
   });
+
+  describe.skip('getRunnigJSON', () => {
+    it('should return correct JSON', () => {
+      // const execution = new Execution(executionFullData);
+      // expect(execution.toJSON()).eql(executionFullData);
+    });
+  });
 });

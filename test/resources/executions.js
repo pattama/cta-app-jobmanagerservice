@@ -1,8 +1,10 @@
 'use strict';
 
+const scenarioResourcs = require('./scenarios');
+
 const completedExecution = {
   id: '2222222222',
-  scenario: '1111111111',
+  scenario: scenarioResourcs.completedScenario,
   configuration: {
     id: '1232131232',
     name: 'testConfig',
