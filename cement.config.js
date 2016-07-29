@@ -50,12 +50,28 @@ const config = {
           ],
         },
       ],
-      subscribe: [],
+      subscribe: [
+        {
+          topic: 'rabitmq',
+          data: [
+            {
+              nature: {
+                type: 'execution',
+                quality: 'creation',
+              },
+            },
+          ],
+        },
+      ],
     },
 //------------------------------------------------------------------------
     {
       name: 'jobmanager.creation',
       module: '../../../lib/bricks/jobmanager_creation',
+      properties: {
+        executionsUrl: 'http://localhost:1337/executions',
+        instancesUrl: 'http://localhost:1337/instances',
+      },
       subscribe: [
         {
           topic: 'jobmanager',
@@ -76,7 +92,7 @@ const config = {
             {
               nature: {
                 type: 'execution',
-                quality: 'running',
+                quality: 'creation',
               },
             },
           ],
@@ -85,7 +101,7 @@ const config = {
     },
 //------------------------------------------------------------------------
 //    {
-//      name: 'jobmanager.cacellation',
+//      name: 'jobmanager.cancellation',
 //      module: './lib/bricks/jobmanagercancellation',
 //      subscribe: [
 //        {

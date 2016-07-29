@@ -59,13 +59,25 @@ describe('JobManagerCreation.process', () => {
       new Instance({ hostname: 'instance1' }),
       new Instance({ hostname: 'instance2' }),
       new Instance({ hostname: 'instance3' }),
-    ];
+    ].map((instance) => instance.toJSON());
+
+    const updateInstance = responseInstances[0];
+
+    const completedExecutionWithInstance = JSON.parse(JSON.stringify(responseExecution));
+    completedExecutionWithInstance.instances = [responseInstances[0]];
+
 
     mockExecutionRest
-      .expects('upsertExecutions')
+      .expects('createExecution')
       .withArgs(createdExecution)
       .once()
       .resolves(responseExecution);
+
+    mockExecutionRest
+      .expects('updateExecution')
+      .withArgs(responseExecution.id, {instances: [updateInstance]})
+      .once()
+      .resolves(completedExecutionWithInstance);
 
     mockInstancesRest
       .expects('getMatchingInstances')
@@ -73,33 +85,32 @@ describe('JobManagerCreation.process', () => {
       .once()
       .resolves(responseInstances);
 
-    const completedExecutionWithInstance = JSON.parse(JSON.stringify(responseExecution));
-    completedExecutionWithInstance.instances = [responseInstances[0]];
-
-    mockExecutionRest
-      .expects('upsertExecutions')
-      .withArgs(completedExecutionWithInstance)
-      .once()
-      .resolves(completedExecutionWithInstance);
 
     const contextData = new ContextMock(cementHelperMock, {
       payload: { scenario, user },
       nature: {
-        type: 'testtype',
-        quality: 'testquality',
+        type: 'execution',
+        quality: 'creation',
       },
     });
+
+    const expectedContextResp = {
+      id: responseExecution.id,
+      message: {
+        id: responseExecution.id,
+        nature: contextData.data.nature,
+        payload: completedExecutionWithInstance,
+      },
+      queue: completedExecutionWithInstance.instances[0].hostname,
+      nature: contextData.data.nature,
+
+    }
 
     const publishSpy = sandbox.spy(jobManagerCreation.context, 'publish');
 
     return expect(jobManagerCreation.process(contextData))
       .to.be.fulfilled.and.then(() => {
-        expect(jobManagerCreation.context.data).eql({
-          payload: {
-            queue: completedExecutionWithInstance.instances[0].hostname,
-            message: completedExecutionWithInstance,
-          },
-        });
+        expect(jobManagerCreation.context.data).deep.equals(expectedContextResp);
         expect(publishSpy.calledOnce).eql(true);
       });
   });
