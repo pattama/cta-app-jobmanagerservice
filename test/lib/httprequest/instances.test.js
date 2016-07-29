@@ -7,7 +7,6 @@ const chaiAsPromised = require('chai-as-promised');
 
 const instances = require('../../../lib/httprequest/instances');
 const configHelper = require('../../../lib/helpers/config_helper');
-const Instance = require('../../../lib/objects/instance');
 
 const sinon = require('sinon');
 
@@ -26,6 +25,7 @@ describe('Instances', () => {
 
     afterEach(() => {
       sandbox.restore();
+      nock.cleanAll();
     });
 
     it('should throw error if no properties query', () => {
