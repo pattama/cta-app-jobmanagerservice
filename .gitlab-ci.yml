@@ -6,8 +6,6 @@ cache:
 
 before_script:
   - export
-  - pwd
-  - whoami
   - mkdir /root/.ssh/
   - cp cta_deploymentkey /root/.ssh/id_rsa
   - chmod 600 /root/.ssh/id_rsa
