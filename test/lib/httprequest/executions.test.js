@@ -16,7 +16,7 @@ const configHelper = require('../../../lib/helpers/config_helper');
 
 const executionsResources = require('../../resources/executions');
 
-describe('Execution', () => {
+describe('Executions', () => {
   let sandbox;
   const executionsUrl = 'http://abc.com/executions';
   const executionId = '1234567890';
@@ -85,19 +85,19 @@ describe('Execution', () => {
     });
   });
 
-  describe('upsertExecutions', () => {
-    it('should upsert successfully', () => {
+  describe('createExecution', () => {
+    it('should create successfully', () => {
       // TODO: Talk with execution team about response data
-      const testData = { test: 'test' };
+      const testData = executionsResources.completedExecution;
+      delete testData.id;
+      const respData = testData;
       const nockExecutionPostReq = nock(executionsUrl)
         .post('', testData)
-        .reply(httpStatus.OK, {
-          type: 'execution',
-        });
+        .reply(httpStatus.OK, respData);
 
-      return expect(executions.upsertExecutions(testData))
+      return expect(executions.createExecution(testData))
         .to.be.fulfilled.and.then((result) => {
-          expect(result).eql({ type: 'execution' });
+          expect(result).eql(respData);
 
           expect(nockExecutionPostReq.isDone()).equal(true);
         });
@@ -110,7 +110,7 @@ describe('Execution', () => {
           .post('', testData)
           .reply(httpStatus.INTERNAL_SERVER_ERROR);
 
-        return expect(executions.upsertExecutions(testData))
+        return expect(executions.createExecution(testData))
           .to.be.rejected.and.then((reason) => {
             expect(reason.statusCode).equal(httpStatus.INTERNAL_SERVER_ERROR);
 
@@ -124,7 +124,7 @@ describe('Execution', () => {
           .post('', testData)
           .reply(httpStatus.BAD_REQUEST);
 
-        return expect(executions.upsertExecutions(testData))
+        return expect(executions.createExecution(testData))
           .to.be.rejected.and.then((reason) => {
             expect(reason.statusCode).equal(httpStatus.BAD_REQUEST);
 
@@ -138,7 +138,7 @@ describe('Execution', () => {
           .post('', testData)
           .replyWithError({ code: 'ECONNRESET' });
 
-        return expect(executions.upsertExecutions(testData))
+        return expect(executions.createExecution(testData))
           .to.be.rejected.and.then((reason) => {
             expect(reason.code).equal('ECONNRESET');
 

@@ -46,17 +46,16 @@ describe('Instances', () => {
           },
         ],
       };
+      const respData = [
+        { hostname: 'hostname1' },
+        { hostname: 'hostname2' },
+      ];
       const nockInstancesGetReq = nock(instancesUrl)
         .post('/matchingInstances', matchingData)
-        .reply(httpStatus.OK, [
-          new Instance({ hostname: 'hostname1' }),
-          new Instance({ hostname: 'hostname2' }),
-        ]);
-
+        .reply(httpStatus.OK, respData);
       return expect(instances.getMatchingInstances(matchingData))
         .to.be.fulfilled.and.then((result) => {
-          expect(result.statusCode).equal(httpStatus.OK);
-          expect(result.instances).to.be.an('array');
+          expect(result).to.be.deep.equal(respData);
           expect(nockInstancesGetReq.isDone()).equal(true);
         });
     });
