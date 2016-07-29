@@ -14,6 +14,8 @@ const commandLineJobResources = require('../../../resources/commandlinejob');
 
 const JobManagerDrop = require('../../../../lib/bricks/jobmanager_drop');
 
+const EVENTS = require('../../../../lib/enum/events');
+
 const cementHelperMock = new CementHelperMock();
 
 describe('JobManagerDrop.process', () => {
@@ -61,7 +63,7 @@ describe('JobManagerDrop.process', () => {
         },
       });
 
-      jobManagerDrop.context.on('done', (data) => {
+      jobManagerDrop.context.on(EVENTS.DONE, (data) => {
         const expectedCommandlineJob = JSON.parse(JSON.stringify(commandlineJob));
         expectedCommandlineJob.id = '3';
 
@@ -95,7 +97,7 @@ describe('JobManagerDrop.process', () => {
         },
       });
 
-      jobManagerDrop.context.on('reject', (data) => {
+      jobManagerDrop.context.on(EVENTS.REJECT, (data) => {
         expect(data).equal(true);
 
         done();

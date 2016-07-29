@@ -29,6 +29,7 @@ describe('Executions', () => {
   });
   afterEach(() => {
     sandbox.restore();
+    nock.cleanAll();
   });
   describe('getExecution', () => {
     it('should get successfully', () => {
@@ -139,6 +140,68 @@ describe('Executions', () => {
           .replyWithError({ code: 'ECONNRESET' });
 
         return expect(executions.createExecution(testData))
+          .to.be.rejected.and.then((reason) => {
+            expect(reason.code).equal('ECONNRESET');
+
+            expect(nockExecutionPostReq.isDone()).equal(true);
+          });
+      });
+    });
+  });
+
+  describe('updateExecution', () => {
+    it('should create successfully', () => {
+      // TODO: Talk with execution team about response data
+      const testData = executionsResources.completedExecution;
+      const respData = testData;
+      const nockExecutionPostReq = nock(executionsUrl)
+        .post(`/${testData.id}`, testData)
+        .reply(httpStatus.OK, respData);
+
+      return expect(executions.updateExecution(testData.id, testData))
+        .to.be.fulfilled.and.then((result) => {
+          expect(result).eql(respData);
+
+          expect(nockExecutionPostReq.isDone()).equal(true);
+        });
+    });
+
+    describe('Errors', () => {
+      it('should handle httpStatus 500+ error', () => {
+        const testData = executionsResources.completedExecution;
+        const nockExecutionPostReq = nock(executionsUrl)
+          .post(`/${testData.id}`, testData)
+          .reply(httpStatus.INTERNAL_SERVER_ERROR);
+
+        return expect(executions.updateExecution(testData.id, testData))
+          .to.be.rejected.and.then((reason) => {
+            expect(reason.statusCode).equal(httpStatus.INTERNAL_SERVER_ERROR);
+
+            expect(nockExecutionPostReq.isDone()).equal(true);
+          });
+      });
+
+      it('should handle httpStatus 400+ error', () => {
+        const testData = executionsResources.completedExecution;
+        const nockExecutionPostReq = nock(executionsUrl)
+          .post(`/${testData.id}`, testData)
+          .reply(httpStatus.BAD_REQUEST);
+
+        return expect(executions.updateExecution(testData.id, testData))
+          .to.be.rejected.and.then((reason) => {
+            expect(reason.statusCode).equal(httpStatus.BAD_REQUEST);
+
+            expect(nockExecutionPostReq.isDone()).equal(true);
+          });
+      });
+
+      it('should handle error', () => {
+        const testData = executionsResources.completedExecution;
+        const nockExecutionPostReq = nock(executionsUrl)
+          .post(`/${testData.id}`, testData)
+          .replyWithError({ code: 'ECONNRESET' });
+
+        return expect(executions.updateExecution(testData.id, testData))
           .to.be.rejected.and.then((reason) => {
             expect(reason.code).equal('ECONNRESET');
 
