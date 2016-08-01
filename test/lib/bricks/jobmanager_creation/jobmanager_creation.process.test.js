@@ -87,8 +87,10 @@ describe('JobManagerCreation.process', () => {
       .once()
       .resolves(responseInstances);
 
+    const jobId = '1111';
 
     const contextData = new ContextMock(cementHelperMock, {
+      id: jobId,
       payload: { scenario, user },
       nature: {
         type: 'execution',
@@ -107,21 +109,41 @@ describe('JobManagerCreation.process', () => {
       nature: contextData.data.nature,
     };
 
-    let expectedPublishData;
-    let expectedCalledCount = 0;
+    const expectedPublishAckData = {
+      id: `acknowledge-${jobId}`,
+      nature: {
+        type: 'execution',
+        quality: 'acknowledge',
+      },
+      payload: { jobId },
+    };
+
+    let actualPublishData;
+    let actualPublishAckData;
+    let actualCalledCount = 0;
+    let actualAckCalledCount = 0;
 
     sandbox.stub(ContextMock.prototype, 'publish', function publish() {
-      expectedCalledCount++;
-      if (!this.emitedEvent) {
+      if (this.data.queue) {
+        actualCalledCount++;
         this.emitedEvent = true;
-        expectedPublishData = this.data;
+        actualPublishData = this.data;
+        this.emit(EVENTS.DONE);
+      }
+      if (this.data.nature.type === 'execution' &&
+          this.data.nature.quality === 'acknowledge') {
+        actualAckCalledCount++;
+        actualPublishAckData = this.data;
         this.emit(EVENTS.DONE);
       }
     });
 
     contextData.on(EVENTS.DONE, () => {
-      expect(expectedPublishData).deep.equals(expectedContextResp);
-      expect(expectedCalledCount).equal(1);
+      expect(actualPublishData).deep.equals(expectedContextResp);
+      expect(actualCalledCount).equal(1);
+
+      expect(actualPublishAckData).deep.equals(expectedPublishAckData);
+      expect(actualAckCalledCount).equal(1);
 
       done();
     });
@@ -171,8 +193,9 @@ describe('JobManagerCreation.process', () => {
       .once()
       .resolves(responseInstances);
 
-
+    const jobId = '1111';
     const contextData = new ContextMock(cementHelperMock, {
+      id: jobId,
       payload: { scenario, user },
       nature: {
         type: 'execution',
@@ -191,21 +214,21 @@ describe('JobManagerCreation.process', () => {
       nature: contextData.data.nature,
     };
 
-    let expectedPublishData;
-    let expectedCalledCount = 0;
+    let actualPublishData;
+    let actualCalledCount = 0;
 
     sandbox.stub(ContextMock.prototype, 'publish', function publish() {
-      expectedCalledCount++;
+      actualCalledCount++;
       if (!this.emitedEvent) {
         this.emitedEvent = true;
-        expectedPublishData = this.data;
+        actualPublishData = this.data;
         this.emit(EVENTS.REJECT);
       }
     });
 
     contextData.on(EVENTS.REJECT, () => {
-      expect(expectedPublishData).deep.equals(expectedContextResp);
-      expect(expectedCalledCount).equal(1);
+      expect(actualPublishData).deep.equals(expectedContextResp);
+      expect(actualCalledCount).equal(1);
 
       done();
     });

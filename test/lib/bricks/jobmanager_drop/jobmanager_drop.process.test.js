@@ -23,7 +23,16 @@ describe('JobManagerDrop.process', () => {
   let sandbox;
 
   beforeEach(() => {
-    jobManagerDrop = new JobManagerDrop(cementHelperMock, { name: 'mock' });
+    jobManagerDrop = new JobManagerDrop(cementHelperMock, {
+      name: 'mock',
+      properties: {
+        provider: {
+          name: 'rabbitmq',
+          options: {},
+        },
+      },
+      queue: '',
+    });
     sandbox = sinon.sandbox.create();
   });
 
