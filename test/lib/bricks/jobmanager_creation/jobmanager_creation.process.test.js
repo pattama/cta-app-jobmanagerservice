@@ -110,14 +110,14 @@ describe('JobManagerCreation.process', () => {
     let expectedPublishData;
     let expectedCalledCount = 0;
 
-    ContextMock.prototype.publish = function publish() {
+    sandbox.stub(ContextMock.prototype, 'publish', function publish() {
       expectedCalledCount++;
       if (!this.emitedEvent) {
         this.emitedEvent = true;
         expectedPublishData = this.data;
         this.emit(EVENTS.DONE);
       }
-    };
+    });
 
     contextData.on(EVENTS.DONE, () => {
       expect(expectedPublishData).deep.equals(expectedContextResp);
@@ -194,14 +194,14 @@ describe('JobManagerCreation.process', () => {
     let expectedPublishData;
     let expectedCalledCount = 0;
 
-    ContextMock.prototype.publish = function publish() {
+    sandbox.stub(ContextMock.prototype, 'publish', function publish() {
       expectedCalledCount++;
       if (!this.emitedEvent) {
         this.emitedEvent = true;
         expectedPublishData = this.data;
         this.emit(EVENTS.REJECT);
       }
-    };
+    });
 
     contextData.on(EVENTS.REJECT, () => {
       expect(expectedPublishData).deep.equals(expectedContextResp);

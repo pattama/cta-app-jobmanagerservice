@@ -29,6 +29,7 @@ describe('JobManagerDrop.process', () => {
 
   afterEach(() => {
     sandbox.verify();
+    sandbox.restore();
   });
 
   describe('Consumed', () => {
@@ -36,7 +37,8 @@ describe('JobManagerDrop.process', () => {
       const execution = executionsResources.completedExecution;
       const commandlineJob = commandLineJobResources.commandlineJob;
       let idCounter = 1;
-      jobManagerDrop.messaging.consume = (input) => {
+
+      sandbox.stub(jobManagerDrop.messaging, 'consume', (input) => {
         const response = JSON.parse(JSON.stringify(commandlineJob));
         response.id = `${idCounter}`;
         idCounter++;
@@ -44,7 +46,7 @@ describe('JobManagerDrop.process', () => {
           input.cb(response);
         }, 10);
         return Promise.resolve();
-      };
+      });
 
       sandbox.mock(jobManagerDrop.messaging)
         .expects('produce')

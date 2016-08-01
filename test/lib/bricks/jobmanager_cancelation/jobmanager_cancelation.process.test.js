@@ -14,6 +14,8 @@ const executionsResources = require('../../../resources/executions');
 const executionRest = require('../../../../lib/httprequest/executions');
 const instancesRest = require('../../../../lib/httprequest/instances');
 
+const EVENTS = require('../../../../lib/enum/events');
+
 const JobManagerCancellation = require('../../../../lib/bricks/jobmanager_cancelation');
 
 const cementHelperMock = new CementHelperMock();
@@ -65,19 +67,19 @@ describe('JobManagerCancellation.process', () => {
           },
         });
 
-        ContextMock.prototype.publish = function publish() {
+        let actualCallCount = 0;
+        sandbox.stub(ContextMock.prototype, 'publish', function publish() {
+          actualCallCount++;
           if (!this.emitedEvent) {
             this.emitedEvent = true;
-            this.emit('reject');
+            this.emit(EVENTS.REJECT);
           }
-        };
-
-        const publishSpy = sandbox.spy(ContextMock.prototype, 'publish');
+        });
 
         return expect(jobManagerCancellation.process(contextData))
           .to.be.fulfilled.and.then((results) => {
             expect(results).eql(execution.instances);
-            expect(publishSpy.callCount).eql(execution.instances.length * 2);
+            expect(actualCallCount).eql(execution.instances.length * 2);
           });
       });
     });
@@ -106,16 +108,16 @@ describe('JobManagerCancellation.process', () => {
           },
         });
 
-        ContextMock.prototype.publish = function publish() {
-          this.emit('done');
-        };
-
-        const publishSpy = sandbox.spy(ContextMock.prototype, 'publish');
+        let actualCallCount = 0;
+        sandbox.stub(ContextMock.prototype, 'publish', function publish() {
+          actualCallCount++;
+          this.emit(EVENTS.DONE);
+        });
 
         return expect(jobManagerCancellation.process(contextData))
           .to.be.fulfilled.and.then((results) => {
             expect(results).eql(execution.instances);
-            expect(publishSpy.callCount).eql(execution.instances.length);
+            expect(actualCallCount).eql(execution.instances.length);
           });
       });
     });
@@ -139,18 +141,19 @@ describe('JobManagerCancellation.process', () => {
           },
         });
 
-        ContextMock.prototype.publish = function publish() {
+        let actualCallCount = 0;
+        sandbox.stub(ContextMock.prototype, 'publish', function publish() {
+          actualCallCount++;
           if (!this.emitedEvent) {
             this.emitedEvent = true;
-            this.emit('reject');
+            this.emit(EVENTS.REJECT);
           }
-        };
-        const publishSpy = sandbox.spy(ContextMock.prototype, 'publish');
+        });
 
         return expect(jobManagerCancellation.process(contextData))
           .to.be.fulfilled.and.then((results) => {
             expect(results).eql(execution.instances);
-            expect(publishSpy.callCount).eql(execution.instances.length * 2);
+            expect(actualCallCount).eql(execution.instances.length * 2);
           });
       });
     });
@@ -171,15 +174,16 @@ describe('JobManagerCancellation.process', () => {
           },
         });
 
-        ContextMock.prototype.publish = function publish() {
-          this.emit('done');
-        };
-        const publishSpy = sandbox.spy(ContextMock.prototype, 'publish');
+        let actualCallCount = 0;
+        sandbox.stub(ContextMock.prototype, 'publish', function publish() {
+          actualCallCount++;
+          this.emit(EVENTS.DONE);
+        });
 
         return expect(jobManagerCancellation.process(contextData))
           .to.be.fulfilled.and.then((results) => {
             expect(results).eql(execution.instances);
-            expect(publishSpy.callCount).eql(execution.instances.length);
+            expect(actualCallCount).eql(execution.instances.length);
           });
       });
     });
