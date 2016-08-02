@@ -52,12 +52,12 @@ const config = {
       ],
       subscribe: [
         {
-          topic: 'rabitmq',
+          topic: 'acknowledge',
           data: [
             {
               nature: {
                 type: 'execution',
-                quality: 'creation',
+                quality: 'acknowledge',
               },
             },
           ],
@@ -93,6 +93,17 @@ const config = {
               nature: {
                 type: 'execution',
                 quality: 'creation',
+              },
+            },
+          ],
+        },
+        {
+          topic: 'acknowledge',
+          data: [
+            {
+              nature: {
+                type: 'execution',
+                quality: 'acknowledge',
               },
             },
           ],

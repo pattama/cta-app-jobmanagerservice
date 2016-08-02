@@ -87,10 +87,10 @@ describe('JobManagerCreation.process', () => {
       .once()
       .resolves(responseInstances);
 
-    const jobId = '1111';
+    const jobid = '1111';
 
     const contextData = new ContextMock(cementHelperMock, {
-      id: jobId,
+      id: jobid,
       payload: { scenario, user },
       nature: {
         type: 'execution',
@@ -110,12 +110,12 @@ describe('JobManagerCreation.process', () => {
     };
 
     const expectedPublishAckData = {
-      id: `acknowledge-${jobId}`,
+      id: `acknowledge-${jobid}`,
       nature: {
         type: 'execution',
         quality: 'acknowledge',
       },
-      payload: { jobId },
+      payload: { jobid },
     };
 
     let actualPublishData;
@@ -193,9 +193,9 @@ describe('JobManagerCreation.process', () => {
       .once()
       .resolves(responseInstances);
 
-    const jobId = '1111';
+    const jobid = '1111';
     const contextData = new ContextMock(cementHelperMock, {
-      id: jobId,
+      id: jobid,
       payload: { scenario, user },
       nature: {
         type: 'execution',
