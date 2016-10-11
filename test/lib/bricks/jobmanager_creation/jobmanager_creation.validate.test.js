@@ -12,7 +12,7 @@ const ContextMock = require('../../../mocks/context');
 const scenarioResources = require('../../../resources/scenarios');
 const userResources = require('../../../resources/users');
 
-const JobManagerCreation = require('../../../../lib/bricks/jobmanager_creation');
+const JobManagerCreation = require('../../../../lib/bricks/businesslogics/jobmanager/helpers/jobmanager_creation');
 
 describe('JobManagerCreation.validate', () => {
   let jobManager;

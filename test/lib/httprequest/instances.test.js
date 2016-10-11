@@ -5,8 +5,8 @@ const httpStatus = require('http-status');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 
-const instances = require('../../../lib/httprequest/instances');
-const configHelper = require('../../../lib/helpers/config_helper');
+const instances = require('../.././instances');
+const configHelper = require('../.././config_helper');
 
 const sinon = require('sinon');
 

@@ -12,9 +12,9 @@ const ContextMock = require('../../../mocks/context');
 const executionsResources = require('../../../resources/executions');
 const commandLineJobResources = require('../../../resources/commandlinejob');
 
-const JobManagerDrop = require('../../../../lib/bricks/jobmanager_drop');
+const JobManagerDrop = require('../../../../lib/bricks/businesslogics/jobmanager/helpers/jobmanager_drop');
 
-const EVENTS = require('../../../../lib/enum/events');
+const EVENTS = require('../../.././events');
 
 const cementHelperMock = new CementHelperMock();
 

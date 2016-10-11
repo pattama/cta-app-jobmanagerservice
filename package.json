@@ -44,12 +44,15 @@
     "http-status": "^0.2.3",
     "lodash": "^4.14.0",
     "request": "^2.74.0",
+    "co": "^4.6.0",
     "cta-brick": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick.git",
+    "cta-common": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-common.git",
+    "cta-expresswrapper": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-expresswrapper.git",
     "cta-logger": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-logger.git",
-    "cta-tools": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-tools.git",
-    "cta-flowcontrol": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-flowcontrol.git",
-    "cta-receiver": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-receiver.git",
-    "cta-sender": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-sender.git",
-    "cta-messaging": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-messaging.git"
+    "cta-tool": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-tool.git",
+    "cta-flowcontrol": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-flowcontrol.git#aggregatedapp-require-fix",
+    "cta-io": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-io.git",
+    "cta-messaging": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-messaging.git",
+    "cta-restapi": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-restapi.git#aggregatedapp-require-fix"
   }
 }

@@ -3,7 +3,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 
-const Instance = require('../../../lib/objects/instance');
+const Instance = require('../../../lib/utils/datamodels/instance');
 
 describe('Instance', () => {
   const instancePhysicalData = {

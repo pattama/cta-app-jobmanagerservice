@@ -3,7 +3,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 
-const Scenario = require('../../../lib/objects/scenario');
+const Scenario = require('../../../lib/utils/datamodels/scenario');
 
 describe('Scenario', () => {
   const scenarioData = {

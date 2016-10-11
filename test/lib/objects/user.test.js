@@ -3,7 +3,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 
-const User = require('../../../lib/objects/user');
+const User = require('../../../lib/utils/datamodels/user');
 
 describe('User', () => {
   const userData = {
