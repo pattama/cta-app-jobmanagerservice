@@ -5,7 +5,7 @@ const expect = chai.expect;
 
 const _ = require('lodash');
 
-const Execution = require('../../../lib/objects/execution');
+const Execution = require('../../../lib/utils/datamodels/execution');
 
 describe('Execution', () => {
   const executionData = {

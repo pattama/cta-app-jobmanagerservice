@@ -11,12 +11,12 @@ const ContextMock = require('../../../mocks/context');
 
 const executionsResources = require('../../../resources/executions');
 
-const executionRest = require('../../../../lib/httprequest/executions');
-const instancesRest = require('../../../../lib/httprequest/instances');
+const executionRest = require('../../.././executions');
+const instancesRest = require('../../.././instances');
 
-const EVENTS = require('../../../../lib/enum/events');
+const EVENTS = require('../../.././events');
 
-const JobManagerCancellation = require('../../../../lib/bricks/jobmanager_cancelation');
+const JobManagerCancellation = require('../../../../lib/bricks/businesslogics/jobmanager/helpers/jobmanager_cancelation');
 
 const cementHelperMock = new CementHelperMock();
 

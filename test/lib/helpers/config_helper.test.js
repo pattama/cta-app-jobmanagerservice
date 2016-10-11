@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 
 // const config = require('../../../config');
-const configHelper = require('../../../lib/helpers/config_helper');
+const configHelper = require('../.././config_helper');
 
 describe('configHelper', () => {
   let sandbox;

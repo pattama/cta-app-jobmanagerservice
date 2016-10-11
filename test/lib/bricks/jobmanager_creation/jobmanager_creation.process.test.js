@@ -13,14 +13,14 @@ const scenarioResources = require('../../../resources/scenarios');
 const executionsResources = require('../../../resources/executions');
 const usersResources = require('../../../resources/users');
 
-const executionRest = require('../../../../lib/httprequest/executions');
-const instancesRest = require('../../../../lib/httprequest/instances');
+const executionRest = require('../../.././executions');
+const instancesRest = require('../../.././instances');
 
-const Instance = require('../../../../lib/objects/instance');
+const Instance = require('../../../../lib/utils/datamodels/instance');
 
-const EVENTS = require('../../../../lib/enum/events');
+const EVENTS = require('../../.././events');
 
-const JobManagerCreation = require('../../../../lib/bricks/jobmanager_creation');
+const JobManagerCreation = require('../../../../lib/bricks/businesslogics/jobmanager/helpers/jobmanager_creation');
 
 const cementHelperMock = new CementHelperMock();
 

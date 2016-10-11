@@ -11,8 +11,8 @@ chai.use(chaiAsPromised);
 
 const expect = chai.expect;
 
-const executions = require('../../../lib/httprequest/executions');
-const configHelper = require('../../../lib/helpers/config_helper');
+const executions = require('../.././executions');
+const configHelper = require('../.././config_helper');
 
 const executionsResources = require('../../resources/executions');
 
