@@ -1,14 +1,14 @@
-#How to use
-- clone this repository, you should clone this repo. to your expected brick name
-  - `git clone git@git.sami.int.thomsonreuters.com:compass/cta-brick-boilerplate.git cta-[brickname]`
-- if you don't have nvm please install it by npm install -g nvm
-- change name and description in package.json to be your brick
-- run npm install
+# Application Scheduler for Compass Test Automation
 
-##You can change git remote point to your brick repo.
-- `git remote set-url origin [git url]` or deleting `.git` folder then do git init and set to repo.
 
-###config
+* [App Configuration](#app-configuration)
+#### Contract
+* Rabbit MQ
+  * [Run an execution](#run-an-execution)
+* Rest API
+  * [Cancel an execution](#cancel-an-execution)
+
+###App config
 ```
 {
   executionsUrl: '',
@@ -16,45 +16,89 @@
 }
 ```
 
-##creation execution
+## Run an execution
 ```
 {
-  "id": "execution-1",
-  "nature": {
-    "type": "execution",
-    "quality": "creation"
+"nature": {
+	"type": "execution",
+	"quality": "run"
+},
+"payload": {
+	"scenario": {
+	"id": "57e0e3ff7f256e3368cc4ecb",
+	"name": "testScenario",
+	"description": "Test scenario",
+	"scopetested": "",
+	"pendingTimeout": 300000,
+	"runningTimeout": 300000,
+	"scheduled": true,
+	"testSuite": {
+		"id": "57e0e3ff7f256e3368cc4ecb",
+		"name": "Testsuite",
+		"inputRepository": [{
+			"type": "git",
+			"url": "https://….git",
+			"mountpoint": "C:/temp"
+		}],
+		"tests": [{
+			"id": "57e0e3ff7f256e3368cc4ecb",
+			"name": "Test 1",
+			"description": "test test",
+			"type": "commandLine",
+			"stages": [{
+				"name": "stage",
+				"run": "notepad.exe",
+				"stop": "echo Test - Do stop operations...",
+				"cwd": "C:\\tmp",
+				"mandatory": true,
+				"timeout": 300000
+			}]
+		}, {
+			"id": "57e0e3ff7f256e3368cc4ecb",
+			"name": "Test 1",
+			"description": "test test",
+			"type": "commandLine",
+			"stages": [{
+				"name": "stage",
+				"run": "mspaint.exe",
+				"stop": "echo Test - Do stop operations...",
+				"cwd": "C:\\tmp",
+				"mandatory": true,
+				"timeout": 300000
+			}]
+		}]
+	}
   },
-  "payload": {
-    "scenario": {
-      "id": "1111111111",
-      "name": "testScenario",
-      "description": "Test scenario",
-      "scopetested": "",
-      "testsuites": [
-        {
-          "id": "1231231232",
-          "name": "testTestSuite",
-          "applicationtested": "",
-          "parent": ""
-        }
-      ],
-      "configuration": {
-        "id": "1232131232",
-        "name": "testConfig",
-        "targetmode": "",
-        "runmode": "mono",
-        "type": "physical",
-        "properties": [
-          {
-            "name": "testname",
-            "value": "testvalue"
-          }
-        ]
-      },
-      "pendingtimeout": 1000,
-      "runningtimeout": 1000,
-      "scheduled": true
-    },
-    "user": {}
-  }
-}```
+	"configuration": {
+		"id": "57e0e3ff7f256e3368cc4ecb",
+		"name": "testConfig",
+		"targetmode": "",
+		"runMode": "mono",
+		"type": "physical",
+		"properties": [
+		{
+		  "name": "testname",
+		  "value": "testvalue"
+		}
+	  ]
+	},
+	"user": {
+		"id": "57e0e3ff7f256e3368cc4ecb",
+		"first": "Manassorn",
+		"last": "Vanichdilokkul",
+		"uid": "6029457"
+	}
+}
+}
+```
+
+
+## Cancel an execution
+```
+POST /jobmanager/execution/:id/action
+{
+  "action": "cancel",
+  "state": "",
+  "instances": []
+}
+```
