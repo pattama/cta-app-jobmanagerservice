@@ -27,7 +27,7 @@ describe('BusinessLogics - Execution - Run - createExecution', function() {
     sandbox.restore();
   });
 
-  context.only('when everything ok', function() {
+  context('when everything ok', function() {
 
     it('should resolve execution', function() {
       const createdExecution = {
