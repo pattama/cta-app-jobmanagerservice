@@ -3,11 +3,16 @@
 
 * [App Configuration](#app-configuration)
 
-## Contract
+## Contract In
 * Rabbit MQ
   * [Run an execution](#run-an-execution)
 * Rest API
   * [Cancel an execution](#cancel-an-execution)
+
+## Contract Out
+* Rabbit MQ
+    * [Run Message](#run-message)
+    * [Read Message](#read-message)
 
 ## App configuration
 ```
@@ -104,43 +109,79 @@ POST /jobmanager/execution/:id/action
 }
 ```
 
-## Send tests to agent
+## Contract out
+CTA-JobManager will send the message to the agent via CTA-IO. There are 2 types of message.
+1. Run message
+2. Read message
+
+## Run message
 source: https://docs.google.com/document/d/1bxfFkWxAfYkMFGZZn--_MLkZ7WXz4AAym44YXtnHcX4/edit
 ```
 {
     "nature": {
-        "type": "execution",
-        "quality": "run"
+        "type": "message",
+        "nature": "produce"
     },
     "payload": {
-	    "execution": {
-		    "id": Identifier,
-            "requestTimestamp": Number,
-		    "pendingTimeout": Number,
-		    "runningTimeout": Number
+        "nature": {
+            "type": "execution",
+            "quality": "run"
         },
-	    "testSuite": {
-		    "id": Identifier,
-		    "name": String,
-		    "tests": [{
-			    "id": Identifier,
-			    "name": String,
-			    "description": String,
-			    "type": String, 	// commandLine...
-			    "stages": [{
-			    	"name": "stage",
-			    	"run": "notepad.exe",
-			    	"stop": "echo Test - Do stop operations...",
-			    	"cwd": "C:\\tmp",
-			    	"env": [{
-			    		"key": "foo", "value": "bar", // user values
-			    		"key": "CTA_EXECUTION_DIR" : "value": execution.id // added by jobmanager
-			    	}],
-				"mandatory": true,
-				"timeout": 1000
-			}]
-		}]
-	}
+        "payload": {
+    	    "execution": {
+    		    "id": Identifier,
+                "requestTimestamp": Number,
+    		    "pendingTimeout": Number,
+    		    "runningTimeout": Number
+            },
+    	    "testSuite": {
+    		    "id": Identifier,
+    		    "name": String,
+    		    "tests": [{
+    			    "id": Identifier,
+    			    "name": String,
+    			    "description": String,
+    			    "type": String, 	// commandLine...
+    			    "stages": [{
+    			    	"name": "stage",
+    			    	"run": "notepad.exe",
+    			    	"stop": "echo Test - Do stop operations...",
+    			    	"cwd": "C:\\tmp",
+    			    	"env": [{
+    			    		"key": "foo", "value": "bar", // user values
+    			    		"key": "CTA_EXECUTION_DIR" : "value": execution.id // added by jobmanager
+    			    	}],
+    				"mandatory": true,
+    				"timeout": 1000
+    			}]
+    		}]
+    	}
+    }
 }
-	
+```
+
+## Read Message
+```
+{
+    "nature": {
+        "type": "message",
+        "quality": "produce"
+    },
+    "payload": {
+        "nature": {
+            "type": "execution",
+            "quality": "read"
+        },
+      "payload": {
+    	"execution": {
+    		"id": Identifier,
+            "requestTimestamp": Number,
+    		"pendingTimeout": Number,
+    		"runningTimeout": Number
+    	},
+    	"queue": String 		// probably the execution.id
+       }
+    }
+}    
+
 ```
