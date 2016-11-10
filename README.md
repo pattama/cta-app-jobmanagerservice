@@ -1,14 +1,15 @@
-# Application Scheduler for Compass Test Automation
+# Application Job Manager for Compass Test Automation
 
 
 * [App Configuration](#app-configuration)
-#### Contract
+
+## Contract
 * Rabbit MQ
   * [Run an execution](#run-an-execution)
 * Rest API
   * [Cancel an execution](#cancel-an-execution)
 
-###App config
+## App configuration
 ```
 {
   executionsUrl: '',
@@ -101,4 +102,45 @@ POST /jobmanager/execution/:id/action
   "state": "",
   "instances": []
 }
+```
+
+## Send tests to agent
+source: https://docs.google.com/document/d/1bxfFkWxAfYkMFGZZn--_MLkZ7WXz4AAym44YXtnHcX4/edit
+```
+{
+    "nature": {
+        "type": "execution",
+        "quality": "run"
+    },
+    "payload": {
+	    "execution": {
+		    "id": Identifier,
+            "requestTimestamp": Number,
+		    "pendingTimeout": Number,
+		    "runningTimeout": Number
+        },
+	    "testSuite": {
+		    "id": Identifier,
+		    "name": String,
+		    "tests": [{
+			    "id": Identifier,
+			    "name": String,
+			    "description": String,
+			    "type": String, 	// commandLine...
+			    "stages": [{
+			    	"name": "stage",
+			    	"run": "notepad.exe",
+			    	"stop": "echo Test - Do stop operations...",
+			    	"cwd": "C:\\tmp",
+			    	"env": [{
+			    		"key": "foo", "value": "bar", // user values
+			    		"key": "CTA_EXECUTION_DIR" : "value": execution.id // added by jobmanager
+			    	}],
+				"mandatory": true,
+				"timeout": 1000
+			}]
+		}]
+	}
+}
+	
 ```
