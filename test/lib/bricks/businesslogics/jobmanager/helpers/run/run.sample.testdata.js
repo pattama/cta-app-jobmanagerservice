@@ -2,6 +2,7 @@
 const ObjectID = require('bson').ObjectID;
 
 const data = {
+  "requestTimestamp": 1234567890,
   "scenario": {
     "id": "57e0e3ff7f256e3368cc4ecb",
     "name": "testScenario",

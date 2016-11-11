@@ -4,13 +4,14 @@ const sinon = require('sinon');
 const chai = require('chai');
 const expect = chai.expect;
 chai.use(require('chai-as-promised'));
-const mock = require('mock-require')
+const _ = require('lodash')
 
 const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
 
 describe('BusinessLogics - Execution - Run - getMatchingInstances', function() {
 
+  const inputJob = require('./run.sample.testdata.js');
   const matchingInstances = [
     { hostname: 'machine1' },
     { hostname: 'machine2' }
@@ -34,8 +35,8 @@ describe('BusinessLogics - Execution - Run - getMatchingInstances', function() {
 
 
     it('should resolve first matching instance in MONO mode', function() {
-      const inputJob = require('./run.sample.testdata.js');
-      const contextInputMock = FlowControlUtils.createContext(inputJob);
+      const _inputJob = _.cloneDeep(inputJob);
+      const contextInputMock = FlowControlUtils.createContext(_inputJob);
 
       stubRestGetMatchingInstances.resolves(matchingInstances);
 
@@ -45,9 +46,9 @@ describe('BusinessLogics - Execution - Run - getMatchingInstances', function() {
     });
 
     it('should resolve all matching instances in other modes', function() {
-      const inputJob = require('./run.sample.testdata.js');
-      inputJob.payload.configuration.runMode = 'stress';
-      const inputContext = FlowControlUtils.createContext(inputJob);
+      const _inputJob = _.cloneDeep(inputJob);
+      _inputJob.payload.configuration.runMode = 'stress';
+      const inputContext = FlowControlUtils.createContext(_inputJob);
 
       stubRestGetMatchingInstances.resolves(matchingInstances);
 
@@ -61,8 +62,8 @@ describe('BusinessLogics - Execution - Run - getMatchingInstances', function() {
   context('when instanceRest returns ZERO matching instance', function() {
 
     it('should throws an error', function () {
-      const inputJob = require('./run.sample.testdata.js');
-      const contextInputMock = FlowControlUtils.createContext(inputJob);
+      const _inputJob = _.cloneDeep(inputJob);
+      const contextInputMock = FlowControlUtils.createContext(_inputJob);
 
       stubRestGetMatchingInstances.resolves([]);
 
@@ -71,7 +72,7 @@ describe('BusinessLogics - Execution - Run - getMatchingInstances', function() {
       return expect(promise).to.eventually.be.rejectedWith('No matching instances found')
         .then(() => {
           sinon.assert.calledWithMatch(stubLoggerError,
-            'No matching instances found for configuration: ' + inputJob.payload.configuration.id);
+            'No matching instances found for configuration: ' + _inputJob.payload.configuration.id);
         });
 
     });
