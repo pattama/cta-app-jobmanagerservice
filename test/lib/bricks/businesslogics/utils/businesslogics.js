@@ -16,6 +16,10 @@ class BusinessLogicsUtils {
     const Helper = require(path.join(BusinessLogicsUtils.HelperPath, helperClassName));
     return new Helper(FlowControlUtils.defaultCementHelper, FlowControlUtils.defaultLogger);
   }
+  static createMessenger() {
+    const Messenger = require(path.join(BusinessLogicsUtils.BusinessLogicsPath, '/jobmanager/messenger'))
+    return new Messenger(FlowControlUtils.defaultCementHelper, FlowControlUtils.defaultLogger);
+  }
 }
 
 module.exports = BusinessLogicsUtils;

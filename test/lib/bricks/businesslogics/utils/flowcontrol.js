@@ -10,6 +10,9 @@ const defaultCementHelper = {
   brickName: 'restapi',
   logger: defaultLogger,
   dependencies: {
+    messaging: {
+      get: function() {}
+    }
   },
   createContext: function() {},
 };

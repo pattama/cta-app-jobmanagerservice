@@ -1,0 +1,82 @@
+'use strict';
+
+const sinon = require('sinon');
+const chai = require('chai');
+const expect = chai.expect;
+chai.use(require('chai-as-promised'));
+
+const BusinessLogicsUtils = require('../utils/businesslogics');
+
+describe('BusinessLogics - JobManager - Messenger - getAllMessagesFromQueue', function() {
+
+  const queue = 'queue';
+
+  let sandbox;
+  let messenger;
+  let stubMessagingGet;
+  let contextMock
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+    messenger = BusinessLogicsUtils.createMessenger();
+    stubMessagingGet = sandbox.stub(messenger.cementHelper.dependencies.messaging, 'get');
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
+
+  context('when contextMock emits done event', function() {
+
+    it('should resolves the response', function() {
+      stubMessagingGet.onCall(0).resolves({result: { json: 1 }});
+      stubMessagingGet.onCall(1).resolves({result: { json: 2 }});
+      stubMessagingGet.onCall(2).resolves({result: { json: null }});
+
+      const promise = messenger.getAllMessagesFromQueue(queue);
+      return expect(promise).to.eventually.deep.equal([1,2])
+        .then(() => {
+          sinon.assert.calledThrice(stubMessagingGet);
+          sinon.assert.calledWith(stubMessagingGet, {
+            queue: queue,
+            ack: 'auto'
+          })
+      });
+    });
+
+  });
+
+  // context('when contextMock emits reject event', function() {
+  //
+  //   it('should reject an error', function() {
+  //     const brickName = 'cta-io';
+  //     const err = new Error('Something went wrong');
+  //
+  //     const promise = messenger.acknowledgeMessage(ackId);
+  //     contextMock.emit('reject', brickName, err);
+  //
+  //     return expect(promise).to.eventually.be.rejectedWith({
+  //       returnCode: 'reject',
+  //       brickName: brickName,
+  //       response: err
+  //     });
+  //   });
+  //
+  // });
+  //
+  // context('when contextMock emits error event', function() {
+  //
+  //   it('should reject an error', function() {
+  //     const brickName = 'cta-io';
+  //     const err = new Error('Something went wrong');
+  //
+  //     const promise = messenger.acknowledgeMessage(ackId);
+  //     contextMock.emit('error', brickName, err);
+  //
+  //     return expect(promise).to.eventually.be.rejectedWith({
+  //       returnCode: 'error',
+  //       brickName: brickName,
+  //       response: err
+  //     });
+  //   });
+  //
+  // });
+});
