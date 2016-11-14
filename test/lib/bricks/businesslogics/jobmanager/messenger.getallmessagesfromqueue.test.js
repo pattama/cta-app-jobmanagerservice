@@ -38,45 +38,9 @@ describe('BusinessLogics - JobManager - Messenger - getAllMessagesFromQueue', fu
           sinon.assert.calledWith(stubMessagingGet, {
             queue: queue,
             ack: 'auto'
-          })
+          });
       });
     });
 
   });
-
-  // context('when contextMock emits reject event', function() {
-  //
-  //   it('should reject an error', function() {
-  //     const brickName = 'cta-io';
-  //     const err = new Error('Something went wrong');
-  //
-  //     const promise = messenger.acknowledgeMessage(ackId);
-  //     contextMock.emit('reject', brickName, err);
-  //
-  //     return expect(promise).to.eventually.be.rejectedWith({
-  //       returnCode: 'reject',
-  //       brickName: brickName,
-  //       response: err
-  //     });
-  //   });
-  //
-  // });
-  //
-  // context('when contextMock emits error event', function() {
-  //
-  //   it('should reject an error', function() {
-  //     const brickName = 'cta-io';
-  //     const err = new Error('Something went wrong');
-  //
-  //     const promise = messenger.acknowledgeMessage(ackId);
-  //     contextMock.emit('error', brickName, err);
-  //
-  //     return expect(promise).to.eventually.be.rejectedWith({
-  //       returnCode: 'error',
-  //       brickName: brickName,
-  //       response: err
-  //     });
-  //   });
-  //
-  // });
 });
