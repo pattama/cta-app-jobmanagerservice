@@ -26,7 +26,9 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
     });
     sandbox = sinon.sandbox.create();
     stubRequest = sandbox.stub();
-    mock('request', stubRequest);
+    mock('cta-tool-request', function() {
+      return { exec: stubRequest };
+    });
 
     instancesHttpRequest = mock.reRequire(instancesHttpRequestPath);
   });
@@ -37,13 +39,13 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
   context('when everything is ok', function() {
 
     it('should resolves the HTTP body', function() {
-      const response = {
-        statusCode: 200
+      const result = {
+        status: 200,
+        data: 'Kimi No Na wa'
       };
-      const body = 'Kimi No Na wa';
-      stubRequest.callsArgWith(1, undefined, response, body);
+      stubRequest.resolves(result);
       const promise = instancesHttpRequest.getMatchingInstances('matchingDataId');
-      return expect(promise).to.eventually.equal(body);
+      return expect(promise).to.eventually.equal(result.data);
     });
   });
 
@@ -58,8 +60,8 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
   context('when HTTP request returns an error', function() {
 
     it('should rejects the error', function() {
-      const error = new Error('HTTP 404: Not found');
-      stubRequest.callsArgWith(1, error);
+      const error = new Error('ECONNRESET');
+      stubRequest.rejects(error);
       const promise = instancesHttpRequest.getMatchingInstances('matchingDataId');
       return expect(promise).to.eventually.rejectedWith(error.message);
     })
@@ -67,13 +69,13 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
 
   context('when HTTP request does not return 200', function() {
     it('should rejects an error', function() {
-      const response = {
-        statusCode: 404
+      const result = {
+        status: 404,
+        body: 'Not Found'
       };
-      const body = 'Not Found'
-      stubRequest.callsArgWith(1, undefined, response, body);
+      stubRequest.resolves(result);
       const promise = instancesHttpRequest.getMatchingInstances('matchingDataId');
-      return expect(promise).to.eventually.rejectedWith(response.statusCode);
+      return expect(promise).to.eventually.rejectedWith(result.status);
     });
   })
 });

@@ -46,7 +46,6 @@
     "bson": "^0.5.2",
     "http-status": "^0.2.3",
     "lodash": "^4.14.0",
-    "request": "^2.74.0",
     "co": "^4.6.0",
     "cta-brick": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick.git",
     "cta-common": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-common.git",
@@ -56,6 +55,7 @@
     "cta-flowcontrol": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-flowcontrol.git#aggregatedapp-require-fix",
     "cta-io": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-io.git",
     "cta-messaging": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-messaging.git",
-    "cta-restapi": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-restapi.git#aggregatedapp-require-fix"
+    "cta-restapi": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-restapi.git#aggregatedapp-require-fix",
+    "cta-tool-request": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-tool-request.git"
   }
 }
