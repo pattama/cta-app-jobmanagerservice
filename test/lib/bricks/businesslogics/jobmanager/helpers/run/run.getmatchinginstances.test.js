@@ -24,7 +24,7 @@ describe('BusinessLogics - Execution - Run - getMatchingInstances', function() {
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
     helper = BusinessLogicsUtils.createHelper('run.js');
-    stubRestGetMatchingInstances = sandbox.stub(helper.instancesRest, 'getMatchingInstances');
+    stubRestGetMatchingInstances = sandbox.stub(helper.instanceRequest, 'getMatchingInstances');
     stubLoggerError = sandbox.stub(helper.logger, 'error');
   });
   afterEach(() => {

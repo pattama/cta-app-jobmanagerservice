@@ -56,6 +56,7 @@
     "cta-io": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-io.git",
     "cta-messaging": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-messaging.git",
     "cta-restapi": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-restapi.git#aggregatedapp-require-fix",
+    "cta-brick-request": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick-request.git",
     "cta-tool-request": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-tool-request.git"
   }
 }

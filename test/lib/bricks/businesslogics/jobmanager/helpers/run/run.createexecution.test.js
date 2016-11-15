@@ -19,7 +19,7 @@ describe('BusinessLogics - Execution - Run - createExecution', function() {
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
     helper = BusinessLogicsUtils.createHelper('run.js');
-    stubRestCreateExecution = sandbox.stub(helper.executionRest, 'createExecution');
+    stubRestCreateExecution = sandbox.stub(helper.executionRequest, 'createExecution');
 
     contextInputMock = FlowControlUtils.createContext(inputJob);
   });

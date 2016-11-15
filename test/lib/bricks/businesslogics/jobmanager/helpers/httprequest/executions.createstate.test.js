@@ -7,17 +7,19 @@ chai.use(require('chai-as-promised'));
 const mock = require('mock-require');
 
 const path = require('path');
+const EventEmitter = require('events');
+const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
-const executionsHttpRequestPath = path.join(BusinessLogicsUtils.HelperPath, '/httprequest/executions');
+const executionRequestPath = path.join(BusinessLogicsUtils.HelperPath, '/httprequest/executions');
 const configHelperPath = path.join(BusinessLogicsUtils.HelperPath, '/helpers/config_helper.js');
 
 
 describe('BusinessLogics - JobManager - httprequest - createState', function() {
-
+  const brickName = 'cta-brick-request';
 
   let sandbox;
-  let stubRequest;
-  let executionsHttpRequest;
+  let executionRequest;
+  let contextMock;
   beforeEach(() => {
     mock(configHelperPath, {
       getExecutionsUrl: function() {
@@ -25,15 +27,17 @@ describe('BusinessLogics - JobManager - httprequest - createState', function() {
       }
     });
     sandbox = sinon.sandbox.create();
-    stubRequest = sandbox.stub();
-    mock('cta-tool-request', function() {
-      return { exec: stubRequest };
-    });
+    contextMock = new EventEmitter();
+    contextMock.publish = sinon.stub();
 
-    executionsHttpRequest = mock.reRequire(executionsHttpRequestPath);
+    const ExecutionRequest = mock.reRequire(executionRequestPath);
+    executionRequest = new ExecutionRequest(FlowControlUtils.defaultCementHelper, FlowControlUtils.defaultCementHelper);
+    sandbox.stub(executionRequest.cementHelper, 'createContext')
+      .returns(contextMock);
   });
   afterEach(() => {
     mock.stopAll();
+    sandbox.restore();
   });
 
   context('when everything is ok', function() {
@@ -43,19 +47,37 @@ describe('BusinessLogics - JobManager - httprequest - createState', function() {
         status: 200,
         data: 'Kimi No Na wa'
       };
-      stubRequest.resolves(result);
-      const promise = executionsHttpRequest.createState('whateverData');
+      const promise = executionRequest.createState('whateverData');
+      contextMock.emit('done', brickName, result);
       return expect(promise).to.eventually.equal(result.data);
     });
   });
 
-  context('when HTTP request returns an error', function() {
+  context('when cta-brick-request returns a rejection', function() {
+
+    it('should rejects the rejection', function() {
+      const error = new Error('A rejection');
+      const promise = executionRequest.createState('whateverData');
+      contextMock.emit('reject', brickName, error);
+      return expect(promise).to.eventually.rejectedWith({
+        returnCode: 'reject',
+        brickName: brickName,
+        response: error
+      });
+    })
+  });
+
+  context('when cta-brick-request returns an error', function() {
 
     it('should rejects the error', function() {
       const error = new Error('ECONNRESET');
-      stubRequest.rejects(error);
-      const promise = executionsHttpRequest.createState('whateverData');
-      return expect(promise).to.eventually.rejectedWith(error.message);
+      const promise = executionRequest.createState('whateverData');
+      contextMock.emit('error', brickName, error);
+      return expect(promise).to.eventually.rejectedWith({
+        returnCode: 'error',
+        brickName: brickName,
+        response: error
+      });
     })
   });
 
@@ -65,8 +87,8 @@ describe('BusinessLogics - JobManager - httprequest - createState', function() {
         status: 404,
         data: 'Not Found'
       };
-      stubRequest.resolves(result);
-      const promise = executionsHttpRequest.createState('whateverData');
+      const promise = executionRequest.createState('whateverData');
+      contextMock.emit('done', brickName, result);
       return expect(promise).to.eventually.rejectedWith(result.status);
     });
   })

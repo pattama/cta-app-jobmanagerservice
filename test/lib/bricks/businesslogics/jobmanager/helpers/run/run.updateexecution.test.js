@@ -20,7 +20,7 @@ describe('BusinessLogics - Execution - Run - updateExecution', function() {
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
     helper = BusinessLogicsUtils.createHelper('run.js');
-    stubRestUpdateExecution = sandbox.stub(helper.executionRest, 'updateExecution');
+    stubRestUpdateExecution = sandbox.stub(helper.executionRequest, 'updateExecution');
     stubGetCommandsCount = sandbox.stub(helper, 'getCommandsCount')
 
     contextInputMock = FlowControlUtils.createContext(inputJob);
