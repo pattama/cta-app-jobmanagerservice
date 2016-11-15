@@ -7,17 +7,20 @@ chai.use(require('chai-as-promised'));
 const mock = require('mock-require');
 
 const path = require('path');
+const EventEmitter = require('events');
+const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
-const instancesHttpRequestPath = path.join(BusinessLogicsUtils.HelperPath, '/httprequest/instances');
+const instanceRequestPath = path.join(BusinessLogicsUtils.HelperPath, '/httprequest/instances');
 const configHelperPath = path.join(BusinessLogicsUtils.HelperPath, '/helpers/config_helper.js');
+const InstanceRequest = require(instanceRequestPath);
 
 
 describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', function() {
-
+  const brickName = 'cta-brick-request';
 
   let sandbox;
-  let stubRequest;
-  let instancesHttpRequest;
+  let instanceRequest;
+  let contextMock;
   beforeEach(() => {
     mock(configHelperPath, {
       getInstancesUrl: function() {
@@ -25,15 +28,16 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
       }
     });
     sandbox = sinon.sandbox.create();
-    stubRequest = sandbox.stub();
-    mock('cta-tool-request', function() {
-      return { exec: stubRequest };
-    });
+    contextMock = new EventEmitter();
+    contextMock.publish = sinon.stub();
 
-    instancesHttpRequest = mock.reRequire(instancesHttpRequestPath);
+    instanceRequest = new InstanceRequest(FlowControlUtils.defaultCementHelper, FlowControlUtils.defaultCementHelper);
+    sandbox.stub(instanceRequest.cementHelper, 'createContext')
+      .returns(contextMock);
   });
   afterEach(() => {
     mock.stopAll();
+    sandbox.restore();
   });
 
   context('when everything is ok', function() {
@@ -41,29 +45,47 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
     it('should resolves the HTTP body', function() {
       const result = {
         status: 200,
-        data: 'Kimi No Na wa'
+        data: [{ hostName: 'machine1'}]
       };
-      stubRequest.resolves(result);
-      const promise = instancesHttpRequest.getMatchingInstances('matchingDataId');
+      const promise = instanceRequest.getMatchingInstances('matchingData');
+      contextMock.emit('done', brickName, result);
       return expect(promise).to.eventually.equal(result.data);
     });
   });
 
   context('when matchingData is undefined', function() {
     it('should rejects an error', function() {
-      const promise = instancesHttpRequest.getMatchingInstances(undefined);
+      const promise = instanceRequest.getMatchingInstances(undefined);
       return expect(promise).to.eventually.rejectedWith('matchingQuery is not define or empty');
 
     });
   });
 
-  context('when HTTP request returns an error', function() {
+  context('when cta-brick-request returns a rejection', function() {
+
+    it('should rejects the rejection', function() {
+      const error = new Error('A rejection');
+      const promise = instanceRequest.getMatchingInstances('matchingData');
+      contextMock.emit('reject', brickName, error);
+      return expect(promise).to.eventually.rejectedWith({
+        returnCode: 'reject',
+        brickName: brickName,
+        response: error
+      });
+    })
+  });
+
+  context('when cta-brick-request returns an error', function() {
 
     it('should rejects the error', function() {
       const error = new Error('ECONNRESET');
-      stubRequest.rejects(error);
-      const promise = instancesHttpRequest.getMatchingInstances('matchingDataId');
-      return expect(promise).to.eventually.rejectedWith(error.message);
+      const promise = instanceRequest.getMatchingInstances('matchingData');
+      contextMock.emit('error', brickName, error);
+      return expect(promise).to.eventually.rejectedWith({
+        returnCode: 'error',
+        brickName: brickName,
+        response: error
+      });
     })
   });
 
@@ -71,10 +93,10 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
     it('should rejects an error', function() {
       const result = {
         status: 404,
-        body: 'Not Found'
+        data: 'Not Found'
       };
-      stubRequest.resolves(result);
-      const promise = instancesHttpRequest.getMatchingInstances('matchingDataId');
+      const promise = instanceRequest.getMatchingInstances('matchingDataId');
+      contextMock.emit('done', brickName, result);
       return expect(promise).to.eventually.rejectedWith(result.status);
     });
   })

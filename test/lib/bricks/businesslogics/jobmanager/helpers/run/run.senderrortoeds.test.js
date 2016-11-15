@@ -23,8 +23,8 @@ describe('BusinessLogics - Execution - Run - sendErrorToEds', function() {
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
     helper = BusinessLogicsUtils.createHelper('run.js');
-    stubRestCreateResult = sandbox.stub(helper.executionRest, 'createResult');
-    stubRestCreateState = sandbox.stub(helper.executionRest, 'createState');
+    stubRestCreateResult = sandbox.stub(helper.executionRequest, 'createResult');
+    stubRestCreateState = sandbox.stub(helper.executionRequest, 'createState');
     stubLoggerError = sandbox.stub(helper.logger, 'error');
 
     contextInputMock = FlowControlUtils.createContext(inputJob);
