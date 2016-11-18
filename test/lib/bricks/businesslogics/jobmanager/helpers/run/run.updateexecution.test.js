@@ -2,16 +2,13 @@
 
 const sinon = require('sinon');
 const chai = require('chai');
-const expect = chai.expect;
 chai.use(require('chai-as-promised'));
 
 const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
+const inputJob = require('./run.sample.testdata.js');
 
-describe('BusinessLogics - Execution - Run - updateExecution', function() {
-
-  const inputJob = require('./run.sample.testdata.js');
-
+describe('BusinessLogics - Execution - Run - updateExecution', () => {
   let sandbox;
   let helper;
   let stubRestUpdateExecution;
@@ -21,7 +18,7 @@ describe('BusinessLogics - Execution - Run - updateExecution', function() {
     sandbox = sinon.sandbox.create();
     helper = BusinessLogicsUtils.createHelper('run.js');
     stubRestUpdateExecution = sandbox.stub(helper.executionRequest, 'updateExecution');
-    stubGetCommandsCount = sandbox.stub(helper, 'getCommandsCount')
+    stubGetCommandsCount = sandbox.stub(helper, 'getCommandsCount');
 
     contextInputMock = FlowControlUtils.createContext(inputJob);
   });
@@ -29,15 +26,14 @@ describe('BusinessLogics - Execution - Run - updateExecution', function() {
     sandbox.restore();
   });
 
-  context('when everything ok', function() {
-
-    it('should resolve execution', function() {
+  context('when everything ok', () => {
+    it('should resolve execution', () => {
       const execution = {
-        id: '1234567890'
+        id: '1234567890',
       };
       const instances = [
         { hostname: 'machine1' },
-        { hostname: 'machine2' }
+        { hostname: 'machine2' },
       ];
       const commandsCount = 2;
       stubRestUpdateExecution.resolves();
@@ -46,12 +42,9 @@ describe('BusinessLogics - Execution - Run - updateExecution', function() {
       const promise = helper.updateExecution(contextInputMock, execution, instances);
       return promise.then(() => {
         sinon.assert.calledWith(stubRestUpdateExecution, execution.id, {
-          instances, commandsCount
+          instances, commandsCount,
         });
       });
-
     });
-
   });
-
 });

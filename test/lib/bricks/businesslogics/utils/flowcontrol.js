@@ -11,10 +11,10 @@ const defaultCementHelper = {
   logger: defaultLogger,
   dependencies: {
     messaging: {
-      get: function() {}
-    }
+      get: () => {},
+    },
   },
-  createContext: function() {},
+  createContext: () => {},
 };
 
 class FlowControlUtils {
@@ -25,8 +25,10 @@ class FlowControlUtils {
     return defaultLogger;
   }
   static createContext(data, cementHelper) {
-    cementHelper = cementHelper || defaultCementHelper;
-    return new Context(cementHelper, data);
+    if (cementHelper) {
+      return new Context(cementHelper, data);
+    }
+    return new Context(defaultCementHelper, data);
   }
 }
 

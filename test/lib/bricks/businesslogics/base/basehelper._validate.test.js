@@ -22,10 +22,10 @@ const DEFAULTCEMENTHELPER = {
   dependencies: {
     logger: DEFAULTLOGGER,
   },
-  createContext: function() {},
+  createContext: () => {},
 };
 
-describe('BusinessLogics - Base Helper - _validate', function() {
+describe('BusinessLogics - Base Helper - _validate', () => {
   let helper;
   const DEFAULTINPUTJOB = {
     nature: {
@@ -34,19 +34,19 @@ describe('BusinessLogics - Base Helper - _validate', function() {
     },
     payload: {},
   };
-  before(function() {
+  before(() => {
     helper = new Helper(DEFAULTCEMENTHELPER, DEFAULTLOGGER);
   });
-  context('when everything ok', function() {
+  context('when everything ok', () => {
     const mockInputContext = new Context(DEFAULTCEMENTHELPER, DEFAULTINPUTJOB);
     let promise;
-    before(function() {
+    before(() => {
       promise = helper._validate(mockInputContext);
     });
-    after(function() {
+    after(() => {
     });
-    it('should resolve', function() {
-      return expect(promise).to.eventually.have.property('ok', 1);
+    it('should resolve', () => {
+      expect(promise).to.eventually.have.property('ok', 1);
     });
   });
 });

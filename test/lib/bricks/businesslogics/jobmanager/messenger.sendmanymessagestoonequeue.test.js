@@ -2,14 +2,11 @@
 
 const sinon = require('sinon');
 const chai = require('chai');
-const expect = chai.expect;
 chai.use(require('chai-as-promised'));
-const EventEmitter = require('events');
 
 const BusinessLogicsUtils = require('../utils/businesslogics');
 
-describe('BusinessLogics - JobManager - Messenger - sendManyMessagesToOneQueue', function() {
-
+describe('BusinessLogics - JobManager - Messenger - sendManyMessagesToOneQueue', () => {
   const messages = [{}, {}, {}];
   const queue = 'queue';
   const options = { autoDelete: true, expires: 1000 };
@@ -21,15 +18,13 @@ describe('BusinessLogics - JobManager - Messenger - sendManyMessagesToOneQueue',
     sandbox = sinon.sandbox.create();
     messenger = BusinessLogicsUtils.createMessenger();
     stubSendOneMessageToOneQueue = sandbox.stub(messenger, 'sendOneMessageToOneQueue');
-
   });
   afterEach(() => {
     sandbox.restore();
   });
 
-  context('when everythis is ok', function() {
-
-    it('should resolves', function() {
+  context('when everythis is ok', () => {
+    it('should resolves', () => {
       stubSendOneMessageToOneQueue.resolves();
       const promise = messenger.sendManyMessagesToOneQueue(messages, queue, options);
 
@@ -37,6 +32,5 @@ describe('BusinessLogics - JobManager - Messenger - sendManyMessagesToOneQueue',
         sinon.assert.calledThrice(stubSendOneMessageToOneQueue);
       });
     });
-
   });
 });

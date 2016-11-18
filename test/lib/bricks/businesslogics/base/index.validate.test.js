@@ -27,7 +27,7 @@ const DEFAULTCEMENTHELPER = {
   },
 };
 
-describe('BusinessLogics - Base - validate', function() {
+describe('BusinessLogics - Base - validate', () => {
   const helperName = 'helperone';
   const JOB = {
     nature: {
@@ -37,130 +37,125 @@ describe('BusinessLogics - Base - validate', function() {
     payload: {},
   };
   let logic;
-  before(function () {
+  before(() => {
     // create some mock helpers
-    const MockHelper = function (cementHelper) {
-      return {
-        ok: '1',
-        cementHelper: cementHelper,
-        _validate: function () {
-        },
-        _process: function () {
-        },
-      };
-    };
+    const MockHelper = (cementHelper) => ({
+      ok: '1',
+      cementHelper,
+      _validate: () => {
+      },
+      _process: () => {
+      },
+    });
     logic = new Logic(DEFAULTCEMENTHELPER, DEFAULTCONFIG);
     logic.helpers.set(helperName, new MockHelper(logic.cementHelper, logic.logger));
   });
 
-  after(function () {
-  });
-
-  context('when everything ok', function() {
+  context('when everything ok', () => {
     let validatePromise;
     const job = _.cloneDeep(JOB);
     const context = { data: job };
-    before(function(done) {
+    before((done) => {
       sinon.stub(Brick.prototype, 'validate').resolves();
       sinon.stub(logic.helpers.get(helperName), '_validate').resolves();
-      logic.validate(context).then(function(res) {
+      logic.validate(context).then((res) => {
         validatePromise = res;
         done();
       }).catch(done);
     });
-    after(function() {
+    after(() => {
       Brick.prototype.validate.restore();
       logic.helpers.get(helperName)._validate.restore();
     });
 
-    it('should call super validate()', function() {
-      return expect(Brick.prototype.validate.calledOnce).to.be.true;
-    });
+    it('should call super validate()', () =>
+      expect(Brick.prototype.validate.calledOnce).to.be.true
+    );
 
-    it('should call provider _validate()', function() {
-      return expect(logic.helpers.get(helperName)._validate.calledOnce).to.be.true;
-    });
+    it('should call provider _validate()', () =>
+      expect(logic.helpers.get(helperName)._validate.calledOnce).to.be.true
+    );
 
-    it('should resolve', function() {
-      return expect(validatePromise).to.have.property('ok', 1);
-    });
+    it('should resolve', () =>
+      expect(validatePromise).to.have.property('ok', 1)
+    );
   });
 
-  context('when super validate rejects', function() {
+  context('when super validate rejects', () => {
     const mockError = new Error('mock error');
     const job = _.cloneDeep(JOB);
     const context = { data: job };
-    before(function() {
+    before(() => {
       sinon.stub(Brick.prototype, 'validate').rejects(mockError);
       sinon.stub(logic.helpers.get(helperName), '_validate').resolves();
     });
 
-    after(function() {
+    after(() => {
       Brick.prototype.validate.restore();
       logic.helpers.get(helperName)._validate.restore();
     });
 
-    it('should reject', function() {
+    it('should reject', () => {
       const validatePromise = logic.validate(context);
       return expect(validatePromise).to.eventually.be.rejectedWith(mockError);
     });
   });
 
-  context('when job type is not supported', function() {
+  context('when job type is not supported', () => {
     const job = _.cloneDeep(JOB);
     job.nature.type = 'not-this-logic-name';
     const context = { data: job };
-    before(function() {
+    before(() => {
       sinon.stub(Brick.prototype, 'validate').resolves();
       sinon.stub(logic.helpers.get(helperName), '_validate').resolves();
     });
-    after(function() {
+    after(() => {
       Brick.prototype.validate.restore();
       logic.helpers.get(helperName)._validate.restore();
     });
 
-    it('should reject', function() {
+    it('should reject', () => {
       const validatePromise = logic.validate(context);
       return expect(validatePromise).to.eventually
         .be.rejectedWith(Error, `type ${job.nature.type} not supported`);
     });
   });
 
-  context('when job quality is not supported', function() {
+  context('when job quality is not supported', () => {
     const job = _.cloneDeep(JOB);
     job.nature.quality = 'not-query';
     const context = { data: job };
-    before(function() {
+    before(() => {
       sinon.stub(Brick.prototype, 'validate').resolves();
       sinon.stub(logic.helpers.get(helperName), '_validate').resolves();
     });
-    after(function() {
+    after(() => {
       Brick.prototype.validate.restore();
       logic.helpers.get(helperName)._validate.restore();
     });
 
-    it('should reject', function() {
+    it('should reject', () => {
       const validatePromise = logic.validate(context);
       return expect(validatePromise).to.eventually
         .be.rejectedWith(Error, `quality ${job.nature.quality} not supported`);
     });
   });
 
-  context('when helper validate rejects', function() {
+  context('when helper validate rejects', () => {
     const mockError = new Error('mock error');
     const job = _.cloneDeep(JOB);
     const context = { data: job };
-    before(function() {
+    before(() => {
       sinon.stub(Brick.prototype, 'validate').resolves();
       sinon.stub(logic.helpers.get(helperName), '_validate').rejects(mockError);
     });
 
-    after(function() {
+    after(() => {
       Brick.prototype.validate.restore();
       logic.helpers.get(helperName)._validate.restore();
     });
 
-    it('should reject', function() {
+    it('should reject', () => {
       const validatePromise = logic.validate(context);
       return expect(validatePromise).to.eventually.be.rejectedWith(mockError);
     });

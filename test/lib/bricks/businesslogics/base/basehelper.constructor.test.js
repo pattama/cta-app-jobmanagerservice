@@ -21,33 +21,31 @@ const DEFAULTCEMENTHELPER = {
   },
 };
 
-describe('BusinessLogics - Base Helper - constructor', function() {
-  context('when everything ok', function() {
+describe('BusinessLogics - Base Helper - constructor', () => {
+  context('when everything ok', () => {
     let helper;
-    before(function() {
+    before(() => {
       helper = new Helper(DEFAULTCEMENTHELPER, DEFAULTLOGGER);
     });
-    it('should return a handler instance', function() {
+    it('should return a handler instance', () => {
       expect(helper).to.be.an.instanceof(Helper);
     });
-    it('should have cementHelper property', function() {
+    it('should have cementHelper property', () => {
       expect(helper).to.have.property('cementHelper', DEFAULTCEMENTHELPER);
     });
   });
 
-  context('when missing \'cementHelper\' argument', function() {
-    it('should throw an Error', function() {
-      return expect(function() {
-        return new Helper(null, DEFAULTLOGGER);
-      }).to.throw(Error, 'missing/incorrect \'cementHelper\' CementHelper argument');
-    });
+  context('when missing \'cementHelper\' argument', () => {
+    it('should throw an Error', () =>
+      expect(() => new Helper(null, DEFAULTLOGGER))
+        .to.throw(Error, 'missing/incorrect \'cementHelper\' CementHelper argument')
+    );
   });
 
-  context('when missing \'logger\' argument', function() {
-    it('should throw an Error', function() {
-      return expect(function() {
-        return new Helper(DEFAULTCEMENTHELPER, null);
-      }).to.throw(Error, 'missing/incorrect \'logger\' Logger argument');
-    });
+  context('when missing \'logger\' argument', () => {
+    it('should throw an Error', () =>
+      expect(() => new Helper(DEFAULTCEMENTHELPER, null))
+        .to.throw(Error, 'missing/incorrect \'logger\' Logger argument')
+    );
   });
 });

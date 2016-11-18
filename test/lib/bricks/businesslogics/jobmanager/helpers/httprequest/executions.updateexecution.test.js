@@ -14,7 +14,7 @@ const executionRequestPath = path.join(BusinessLogicsUtils.HelperPath, '/httpreq
 const configHelperPath = path.join(BusinessLogicsUtils.HelperPath, '/helpers/config_helper.js');
 
 
-describe('BusinessLogics - JobManager - httprequest - updateExecution', function() {
+describe('BusinessLogics - JobManager - httprequest - updateExecution', () => {
   const brickName = 'cta-brick-request';
 
   let sandbox;
@@ -22,16 +22,17 @@ describe('BusinessLogics - JobManager - httprequest - updateExecution', function
   let contextMock;
   beforeEach(() => {
     mock(configHelperPath, {
-      getExecutionsUrl: function() {
-        return 'whatever.com';
-      }
+      getExecutionsUrl: () => {
+        'whatever.com';
+      },
     });
     sandbox = sinon.sandbox.create();
     contextMock = new EventEmitter();
     contextMock.publish = sinon.stub();
 
     const ExecutionRequest = mock.reRequire(executionRequestPath);
-    executionRequest = new ExecutionRequest(FlowControlUtils.defaultCementHelper, FlowControlUtils.defaultCementHelper);
+    executionRequest = new ExecutionRequest(FlowControlUtils.defaultCementHelper,
+      FlowControlUtils.defaultCementHelper);
     sandbox.stub(executionRequest.cementHelper, 'createContext')
       .returns(contextMock);
   });
@@ -40,12 +41,11 @@ describe('BusinessLogics - JobManager - httprequest - updateExecution', function
     sandbox.restore();
   });
 
-  context('when everything is ok', function() {
-
-    it('should resolves the HTTP body', function() {
+  context('when everything is ok', () => {
+    it('should resolves the HTTP body', () => {
       const result = {
         status: 200,
-        data: 'Kimi No Na wa'
+        data: 'Kimi No Na wa',
       };
       const promise = executionRequest.updateExecution('whateverId', 'whateverData');
       contextMock.emit('done', brickName, result);
@@ -53,43 +53,41 @@ describe('BusinessLogics - JobManager - httprequest - updateExecution', function
     });
   });
 
-  context('when cta-brick-request returns a rejection', function() {
-
-    it('should rejects the error', function() {
+  context('when cta-brick-request returns a rejection', () => {
+    it('should rejects the error', () => {
       const error = new Error('A rejection');
       const promise = executionRequest.updateExecution('whateverId', 'whateverData');
       contextMock.emit('reject', brickName, error);
       return expect(promise).to.eventually.rejectedWith({
         returnCode: 'reject',
-        brickName: brickName,
-        response: error
+        brickName,
+        response: error,
       });
-    })
+    });
   });
 
-  context('when cta-brick-request returns an error', function() {
-
-    it('should rejects the error', function() {
+  context('when cta-brick-request returns an error', () => {
+    it('should rejects the error', () => {
       const error = new Error('ECONNRESET');
       const promise = executionRequest.updateExecution('whateverId', 'whateverData');
       contextMock.emit('error', brickName, error);
       return expect(promise).to.eventually.rejectedWith({
         returnCode: 'error',
-        brickName: brickName,
-        response: error
+        brickName,
+        response: error,
       });
-    })
+    });
   });
 
-  context('when HTTP request does not return 200', function() {
-    it('should rejects an error', function() {
+  context('when HTTP request does not return 200', () => {
+    it('should rejects an error', () => {
       const result = {
         status: 404,
-        data: 'Not Found'
+        data: 'Not Found',
       };
       const promise = executionRequest.updateExecution('whateverId', 'whateverData');
       contextMock.emit('done', brickName, result);
       return expect(promise).to.eventually.rejectedWith(result.status);
     });
-  })
+  });
 });

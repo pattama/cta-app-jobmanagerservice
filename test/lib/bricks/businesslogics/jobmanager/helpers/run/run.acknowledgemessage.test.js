@@ -1,18 +1,16 @@
 'use strict';
 
 const sinon = require('sinon');
-var chai = require('chai');
+const chai = require('chai');
 chai.use(require('chai-as-promised'));
-var expect = chai.expect;
+const expect = chai.expect;
 
 
 const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
+const inputJob = require('./run.sample.testdata.js');
 
-describe('BusinessLogics - Execution - Run - acknowledgeMessage', function() {
-
-  const inputJob = require('./run.sample.testdata.js');
-
+describe('BusinessLogics - Execution - Run - acknowledgeMessage', () => {
   let sandbox;
   let helper;
   let stubMessengerAcknowledge;
@@ -28,28 +26,25 @@ describe('BusinessLogics - Execution - Run - acknowledgeMessage', function() {
   });
   afterEach(() => {
     sandbox.restore();
-  })
+  });
 
-  context('when everything ok', function() {
-
-    it('should resolve', function() {
+  context('when everything ok', () => {
+    it('should resolve', () => {
       stubMessengerAcknowledge.returns(Promise.resolve());
       return helper.acknowledgeMessage(contextInputMock)
         .then(() => {
           sinon.assert.calledWith(stubMessengerAcknowledge, contextInputMock.data.id);
         });
     });
-
   });
 
-  context('when messenger.acknowledgeMessage reject error', function() {
-
-    it('should emit error event on inputContext', function() {
+  context('when messenger.acknowledgeMessage reject error', () => {
+    it('should emit error event on inputContext', () => {
       const err = {
         returnCode: 'error',
         brickName: 'cta-io',
-        response: new Error('Cannot acknowledge the message')
-      }
+        response: new Error('Cannot acknowledge the message'),
+      };
       stubMessengerAcknowledge.returns(Promise.reject(err));
 
       const promise = helper.acknowledgeMessage(contextInputMock);
@@ -58,8 +53,6 @@ describe('BusinessLogics - Execution - Run - acknowledgeMessage', function() {
           sinon.assert.calledWith(stubMessengerAcknowledge, contextInputMock.data.id);
           sinon.assert.calledWithMatch(stubLoggerError, contextInputMock.data.id);
         });
-
     });
-
   });
 });

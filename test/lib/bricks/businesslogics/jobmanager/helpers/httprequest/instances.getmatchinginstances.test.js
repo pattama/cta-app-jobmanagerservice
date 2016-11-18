@@ -15,7 +15,7 @@ const configHelperPath = path.join(BusinessLogicsUtils.HelperPath, '/helpers/con
 const InstanceRequest = require(instanceRequestPath);
 
 
-describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', function() {
+describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', () => {
   const brickName = 'cta-brick-request';
 
   let sandbox;
@@ -23,15 +23,16 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
   let contextMock;
   beforeEach(() => {
     mock(configHelperPath, {
-      getInstancesUrl: function() {
-        return 'whatever.com';
-      }
+      getInstancesUrl: () => {
+        'whatever.com';
+      },
     });
     sandbox = sinon.sandbox.create();
     contextMock = new EventEmitter();
     contextMock.publish = sinon.stub();
 
-    instanceRequest = new InstanceRequest(FlowControlUtils.defaultCementHelper, FlowControlUtils.defaultCementHelper);
+    instanceRequest = new InstanceRequest(FlowControlUtils.defaultCementHelper,
+      FlowControlUtils.defaultCementHelper);
     sandbox.stub(instanceRequest.cementHelper, 'createContext')
       .returns(contextMock);
   });
@@ -40,12 +41,11 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
     sandbox.restore();
   });
 
-  context('when everything is ok', function() {
-
-    it('should resolves the HTTP body', function() {
+  context('when everything is ok', () => {
+    it('should resolves the HTTP body', () => {
       const result = {
         status: 200,
-        data: [{ hostName: 'machine1'}]
+        data: [{ hostName: 'machine1' }],
       };
       const promise = instanceRequest.getMatchingInstances('matchingData');
       contextMock.emit('done', brickName, result);
@@ -53,51 +53,48 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', fun
     });
   });
 
-  context('when matchingData is undefined', function() {
-    it('should rejects an error', function() {
+  context('when matchingData is undefined', () => {
+    it('should rejects an error', () => {
       const promise = instanceRequest.getMatchingInstances(undefined);
       return expect(promise).to.eventually.rejectedWith('matchingQuery is not define or empty');
-
     });
   });
 
-  context('when cta-brick-request returns a rejection', function() {
-
-    it('should rejects the rejection', function() {
+  context('when cta-brick-request returns a rejection', () => {
+    it('should rejects the rejection', () => {
       const error = new Error('A rejection');
       const promise = instanceRequest.getMatchingInstances('matchingData');
       contextMock.emit('reject', brickName, error);
       return expect(promise).to.eventually.rejectedWith({
         returnCode: 'reject',
-        brickName: brickName,
-        response: error
+        brickName,
+        response: error,
       });
-    })
+    });
   });
 
-  context('when cta-brick-request returns an error', function() {
-
-    it('should rejects the error', function() {
+  context('when cta-brick-request returns an error', () => {
+    it('should rejects the error', () => {
       const error = new Error('ECONNRESET');
       const promise = instanceRequest.getMatchingInstances('matchingData');
       contextMock.emit('error', brickName, error);
       return expect(promise).to.eventually.rejectedWith({
         returnCode: 'error',
-        brickName: brickName,
-        response: error
+        brickName,
+        response: error,
       });
-    })
+    });
   });
 
-  context('when HTTP request does not return 200', function() {
-    it('should rejects an error', function() {
+  context('when HTTP request does not return 200', () => {
+    it('should rejects an error', () => {
       const result = {
         status: 404,
-        data: 'Not Found'
+        data: 'Not Found',
       };
       const promise = instanceRequest.getMatchingInstances('matchingDataId');
       contextMock.emit('done', brickName, result);
       return expect(promise).to.eventually.rejectedWith(result.status);
     });
-  })
+  });
 });
