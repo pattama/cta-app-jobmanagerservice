@@ -1,187 +1,89 @@
-# Application Job Manager for Compass Test Automation
+# Job Manager
+Application for Compass Test Automation
 
+## Summary
+* [Rest API](RESTAPI.md)
+* [DataContract](DATACONTRACT.md)
+* [Document](DOCUMENTATION.md)
+* [Sequence Diagrams](https://www.lucidchart.com/documents/edit/d15cef2b-8b80-4ce0-8e2c-1f3deee1759c)
 
-* [App Configuration](#app-configuration)
-
-## Contract In
-* Rabbit MQ
-  * [Run an execution](#run-an-execution)
-* Rest API
-  * [Cancel an execution](#cancel-an-execution)
-
-## Contract Out
-* Rabbit MQ
-    * [Run Message](#run-message)
-    * [Read Message](#read-message)
-
-## App configuration
+##configuration
 ```
 {
-  executionsUrl: '',
-  instancesUrl: '',
-}
-```
-
-## Run an execution
-```
-{
-"nature": {
-	"type": "execution",
-	"quality": "run"
-},
-"payload": {
-	"scenario": {
-	"id": "57e0e3ff7f256e3368cc4ecb",
-	"name": "testScenario",
-	"description": "Test scenario",
-	"scopetested": "",
-	"pendingTimeout": 300000,
-	"runningTimeout": 300000,
-	"scheduled": true,
-	"testSuite": {
-		"id": "57e0e3ff7f256e3368cc4ecb",
-		"name": "Testsuite",
-		"inputRepository": [{
-			"type": "git",
-			"url": "https://….git",
-			"mountpoint": "C:/temp"
-		}],
-		"tests": [{
-			"id": "57e0e3ff7f256e3368cc4ecb",
-			"name": "Test 1",
-			"description": "test test",
-			"type": "commandLine",
-			"stages": [{
-				"name": "stage",
-				"run": "notepad.exe",
-				"stop": "echo Test - Do stop operations...",
-				"cwd": "C:\\tmp",
-				"mandatory": true,
-				"timeout": 300000
-			}]
-		}, {
-			"id": "57e0e3ff7f256e3368cc4ecb",
-			"name": "Test 1",
-			"description": "test test",
-			"type": "commandLine",
-			"stages": [{
-				"name": "stage",
-				"run": "mspaint.exe",
-				"stop": "echo Test - Do stop operations...",
-				"cwd": "C:\\tmp",
-				"mandatory": true,
-				"timeout": 300000
-			}]
-		}]
-	}
+  name: 'jobmanager',
+  module: './bricks/businesslogics/jobmanager/index.js',
+  properties: {
+    executionsUrl: 'http://localhost:3010/executions',
+    instancesUrl: 'http://pastebin.com/raw/dx5s9T3j'
   },
-	"configuration": {
-		"id": "57e0e3ff7f256e3368cc4ecb",
-		"name": "testConfig",
-		"targetmode": "",
-		"runMode": "mono",
-		"type": "physical",
-		"properties": [
-		{
-		  "name": "testname",
-		  "value": "testvalue"
-		}
-	  ]
-	},
-	"user": {
-		"id": "57e0e3ff7f256e3368cc4ecb",
-		"first": "Manassorn",
-		"last": "Vanichdilokkul",
-		"uid": "6029457"
-	}
-}
-}
-```
-
-
-## Cancel an execution
-```
-POST /jobmanager/execution/:id/action
-{
-  "action": "cancel",
-  "state": "",
-  "instances": []
-}
-```
-
-## Contract out
-CTA-JobManager will send the message to the agent via CTA-IO. There are 2 types of message.
-1. Run message
-2. Read message
-
-## Run message
-source: https://docs.google.com/document/d/1bxfFkWxAfYkMFGZZn--_MLkZ7WXz4AAym44YXtnHcX4/edit
-```
-{
-    "nature": {
-        "type": "message",
-        "nature": "produce"
-    },
-    "payload": {
-        "nature": {
-            "type": "execution",
-            "quality": "run"
+  dependencies: {
+    messaging: 'messaging',
+  },
+  subscribe: [
+    {
+      topic: 'jobmanager',
+      data: [
+        {
+          nature: {
+            type: 'execution',
+            quality: 'run',
+          },
         },
-        "payload": {
-    	    "execution": {
-    		    "id": Identifier,
-                "requestTimestamp": Number,
-    		    "pendingTimeout": Number,
-    		    "runningTimeout": Number
-            },
-    	    "testSuite": {
-    		    "id": Identifier,
-    		    "name": String,
-    		    "tests": [{
-    			    "id": Identifier,
-    			    "name": String,
-    			    "description": String,
-    			    "type": String, 	// commandLine...
-    			    "stages": [{
-    			    	"name": "stage",
-    			    	"run": "notepad.exe",
-    			    	"stop": "echo Test - Do stop operations...",
-    			    	"cwd": "C:\\tmp",
-    			    	"env": [{
-    			    		"key": "foo", "value": "bar", // user values
-    			    		"key": "CTA_EXECUTION_DIR" : "value": execution.id // added by jobmanager
-    			    	}],
-    				"mandatory": true,
-    				"timeout": 1000
-    			}]
-    		}]
-    	}
-    }
-}
-```
-
-## Read Message
-```
-{
-    "nature": {
-        "type": "message",
-        "quality": "produce"
-    },
-    "payload": {
-        "nature": {
-            "type": "execution",
-            "quality": "read"
+        {
+          nature: {
+            type: 'execution',
+            quality: 'cancel',
+          },
         },
-      "payload": {
-    	"execution": {
-    		"id": Identifier,
-            "requestTimestamp": Number,
-    		"pendingTimeout": Number,
-    		"runningTimeout": Number
-    	},
-    	"queue": String 		// probably the execution.id
-       }
-    }
-}    
-
+        {
+          nature: {
+            type: 'execution',
+            quality: 'timeout',
+          },
+        },
+      ],
+    },
+  ],
+  publish: [
+    {
+      topic: 'mq-instance-sender',
+      data: [
+        {
+          nature: {
+            type: 'message',
+            quality: 'get',
+          },
+        },
+        {
+          nature: {
+            type: 'message',
+            quality: 'produce',
+          },
+        },
+      ],
+    },
+    {
+      topic: 'acknowledge',
+      data: [
+        {
+          nature: {
+            type: 'message',
+            quality: 'acknowledge',
+          },
+        },
+      ],
+    },
+    {
+      topic: 'requests.com',
+      data: [
+        {
+          nature: {
+            type: 'request',
+            quality: 'exec',
+          },
+        },
+      ],
+    },
+  ],
+}
 ```
