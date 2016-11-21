@@ -39,14 +39,16 @@ describe('BusinessLogics - Base - validate', () => {
   let logic;
   before(() => {
     // create some mock helpers
-    const MockHelper = (cementHelper) => ({
-      ok: '1',
-      cementHelper,
-      _validate: () => {
-      },
-      _process: () => {
-      },
-    });
+    const MockHelper = function(cementHelper) {
+      return {
+        ok: '1',
+        cementHelper,
+        _validate: () => {
+        },
+        _process: () => {
+        },
+      };
+    };
     logic = new Logic(DEFAULTCEMENTHELPER, DEFAULTCONFIG);
     logic.helpers.set(helperName, new MockHelper(logic.cementHelper, logic.logger));
   });

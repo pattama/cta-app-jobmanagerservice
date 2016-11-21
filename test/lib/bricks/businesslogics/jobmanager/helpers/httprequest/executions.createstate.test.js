@@ -22,9 +22,7 @@ describe('BusinessLogics - JobManager - httprequest - createState', () => {
   let contextMock;
   beforeEach(() => {
     mock(configHelperPath, {
-      getExecutionsUrl: () => {
-        'whatever.com';
-      },
+      getExecutionsUrl: () => 'whatever.com',
     });
     sandbox = sinon.sandbox.create();
     contextMock = new EventEmitter();
