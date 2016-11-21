@@ -2,15 +2,11 @@
 
 const sinon = require('sinon');
 const chai = require('chai');
-const expect = chai.expect;
 chai.use(require('chai-as-promised'));
 
-const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
 
-describe('BusinessLogics - Execution - Run - sendErrorToEds', function() {
-
-  const inputJob = require('./run.sample.testdata.js');
+describe('BusinessLogics - Execution - Run - sendErrorToEds', () => {
   const executionId = '1234567890';
   const errorMessage = 'something went wrong';
 
@@ -19,48 +15,41 @@ describe('BusinessLogics - Execution - Run - sendErrorToEds', function() {
   let stubRestCreateResult;
   let stubRestCreateState;
   let stubLoggerError;
-  let contextInputMock;
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
     helper = BusinessLogicsUtils.createHelper('run.js');
     stubRestCreateResult = sandbox.stub(helper.executionRequest, 'createResult');
     stubRestCreateState = sandbox.stub(helper.executionRequest, 'createState');
     stubLoggerError = sandbox.stub(helper.logger, 'error');
-
-    contextInputMock = FlowControlUtils.createContext(inputJob);
   });
   afterEach(() => {
     sandbox.restore();
   });
 
-  context('when everything ok', function() {
-
-    it('should resolve', function() {
+  context('when everything ok', () => {
+    it('should resolve', () => {
       stubRestCreateResult.resolves();
       stubRestCreateState.resolves();
 
       const promise = helper.sendErrorToEds(executionId, errorMessage);
       return promise.then(() => {
         sinon.assert.calledWith(stubRestCreateResult, sinon.match({
-          executionId: executionId,
+          executionId,
           testId: errorMessage,
           status: 'failed',
-          index: 1
+          index: 1,
         }));
         sinon.assert.calledWith(stubRestCreateState, sinon.match({
-          executionId: executionId,
+          executionId,
           status: 'finished',
-          index: 1
+          index: 1,
         }));
       });
-
     });
-
   });
 
-  context('when restApi has an error', function() {
-
-    it('should writes log and rejects error', function() {
+  context('when restApi has an error', () => {
+    it('should writes log and rejects error', () => {
       const error404 = new Error('HTTP 404: Not Found');
       stubRestCreateResult.rejects(error404);
 
@@ -68,9 +57,6 @@ describe('BusinessLogics - Execution - Run - sendErrorToEds', function() {
       return promise.then(() => {
         sinon.assert.calledWith(stubLoggerError, sinon.match(error404.message));
       });
-
     });
-
   });
-
 });

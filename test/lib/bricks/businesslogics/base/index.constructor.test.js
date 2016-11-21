@@ -22,21 +22,21 @@ const DEFAULTCEMENTHELPER = {
   },
 };
 
-describe('BusinessLogics - Base - constructor', function() {
-  context('when everything ok', function() {
+describe('BusinessLogics - Base - constructor', () => {
+  context('when everything ok', () => {
     let logic;
-    before(function() {
+    before(() => {
       logic = new Logic(DEFAULTCEMENTHELPER, DEFAULTCONFIG);
     });
 
-    after(function() {
+    after(() => {
     });
 
-    it('should extend Brick', function() {
+    it('should extend Brick', () => {
       expect(Object.getPrototypeOf(Logic)).to.equal(Brick);
     });
 
-    it('should return a Logic object', function() {
+    it('should return a Logic object', () => {
       expect(logic).to.be.an.instanceof(Logic);
       expect(logic).to.have.property('helpers').and.to.be.a('Map');
     });

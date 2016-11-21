@@ -1,17 +1,15 @@
 'use strict';
 
 const sinon = require('sinon');
-var chai = require('chai');
-var expect = chai.expect;
+const chai = require('chai');
+const expect = chai.expect;
 chai.use(require('chai-as-promised'));
 
 const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
+const inputJob = require('./run.sample.testdata.js');
 
-describe('BusinessLogics - Execution - Run - createExecution', function() {
-
-  const inputJob = require('./run.sample.testdata.js');
-
+describe('BusinessLogics - Execution - Run - createExecution', () => {
   let sandbox;
   let helper;
   let stubRestCreateExecution;
@@ -27,11 +25,10 @@ describe('BusinessLogics - Execution - Run - createExecution', function() {
     sandbox.restore();
   });
 
-  context('when everything ok', function() {
-
-    it('should resolve execution', function() {
+  context('when everything ok', () => {
+    it('should resolve execution', () => {
       const createdExecution = {
-        id: '1234567980'
+        id: '1234567980',
       };
       stubRestCreateExecution.resolves(createdExecution);
 
@@ -43,12 +40,9 @@ describe('BusinessLogics - Execution - Run - createExecution', function() {
             userId: inputJob.payload.user.id,
             requestTimestamp: inputJob.payload.requestTimestamp,
             pendingTimeout: inputJob.payload.pendingTimeout,
-            runningTimeout: inputJob.payload.runningTimeout
+            runningTimeout: inputJob.payload.runningTimeout,
           });
         });
-
     });
-
   });
-
 });

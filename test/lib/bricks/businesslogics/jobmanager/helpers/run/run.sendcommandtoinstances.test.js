@@ -8,17 +8,16 @@ const _ = require('lodash');
 
 const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
+const inputJob = require('./run.sample.testdata.js');
 
-describe('BusinessLogics - Execution - Run - sendComandToInstances', function() {
-
-  const inputJob = require('./run.sample.testdata.js');
+describe('BusinessLogics - Execution - Run - sendComandToInstances', () => {
   const execution = {
     id: '1234567890',
     commandsCount: 1,
     instances: [
       { hostname: 'machine1' },
-      { hostname: 'machine2' }
-    ]
+      { hostname: 'machine2' },
+    ],
   };
 
   let sandbox;
@@ -37,11 +36,9 @@ describe('BusinessLogics - Execution - Run - sendComandToInstances', function() 
     sandbox.restore();
   });
 
-  context('when everything ok', function() {
-
-    context('when it is MONO or STRESS mode', function() {
-
-      it('should call sendDirectCommandToInstances method', function() {
+  context('when everything ok', () => {
+    context('when it is MONO or STRESS mode', () => {
+      it('should call sendDirectCommandToInstances method', () => {
         const contextInputMock = FlowControlUtils.createContext(inputJob);
         stubSendDirectCommandToInstances.resolves();
 
@@ -50,48 +47,41 @@ describe('BusinessLogics - Execution - Run - sendComandToInstances', function() 
           sinon.assert.calledWith(stubSendDirectCommandToInstances,
             inputJob.payload.scenario, inputJob.payload.configuration, execution);
         });
-
       });
-
     });
 
-    context('when it is GROUP or PARALLEL mode', function() {
-
-      it('should call sendSharedCommandToInstances method', function() {
-        const _inputJob = _.cloneDeep(inputJob);
-        _inputJob.payload.configuration.runMode = 'group';
-        const contextInputMock = FlowControlUtils.createContext(_inputJob);
+    context('when it is GROUP or PARALLEL mode', () => {
+      it('should call sendSharedCommandToInstances method', () => {
+        const inputJobGroup = _.cloneDeep(inputJob);
+        inputJobGroup.payload.configuration.runMode = 'group';
+        const contextInputMock = FlowControlUtils.createContext(inputJobGroup);
         stubSendSharedCommandToInstances.resolves();
 
         const promise = helper.sendCommandToInstances(contextInputMock, execution);
         return promise.then(() => {
           sinon.assert.calledWith(stubSendSharedCommandToInstances,
-            _inputJob.payload.scenario, _inputJob.payload.configuration, execution);
+            inputJobGroup.payload.scenario, inputJobGroup.payload.configuration, execution);
         });
-
       });
-
     });
   });
 
-  context('when runMode is not correct', function() {
+  context('when runMode is not correct', () => {
+    it('throws an error', () => {
+      const inputJobWhatever = _.cloneDeep(inputJob);
+      inputJobWhatever.payload.configuration.runMode = 'whatever';
+      const contextInputMock = FlowControlUtils.createContext(inputJobWhatever);
 
-    it('throws an error', function() {
-      const _inputJob = _.cloneDeep(inputJob);
-      _inputJob.payload.configuration.runMode = 'whatever';
-      const contextInputMock = FlowControlUtils.createContext(_inputJob);
-
-      return expect(function() {
+      return expect(() =>
         helper.sendCommandToInstances(contextInputMock, execution)
-      }).to.throw('runMode is not correct: whatever');
+      ).to.throw('runMode is not correct: whatever');
     });
   });
 
-  context('when sendDirectCommandToInstances rejects an error', function() {
-
-    it('should writes log and reject the error', function() {
-      const _inputJob = _.cloneDeep(inputJob);
-      const contextInputMock = FlowControlUtils.createContext(_inputJob);
+  context('when sendDirectCommandToInstances rejects an error', () => {
+    it('should writes log and reject the error', () => {
+      const inputJobNormal = _.cloneDeep(inputJob);
+      const contextInputMock = FlowControlUtils.createContext(inputJobNormal);
       const err = new Error('Something went wrong');
       stubSendDirectCommandToInstances.rejects(err);
 
@@ -102,5 +92,4 @@ describe('BusinessLogics - Execution - Run - sendComandToInstances', function() 
         });
     });
   });
-
 });

@@ -13,11 +13,13 @@ class BusinessLogicsUtils {
       '/jobmanager/helpers');
   }
   static createHelper(helperClassName) {
+    // eslint-disable-next-line
     const Helper = require(path.join(BusinessLogicsUtils.HelperPath, helperClassName));
     return new Helper(FlowControlUtils.defaultCementHelper, FlowControlUtils.defaultLogger);
   }
   static createMessenger() {
-    const Messenger = require(path.join(BusinessLogicsUtils.BusinessLogicsPath, '/jobmanager/messenger'))
+    // eslint-disable-next-line
+    const Messenger = require(path.join(BusinessLogicsUtils.BusinessLogicsPath, '/jobmanager/messenger'));
     return new Messenger(FlowControlUtils.defaultCementHelper, FlowControlUtils.defaultLogger);
   }
 }
