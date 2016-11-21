@@ -39,7 +39,7 @@ describe('BusinessLogics - Base - validate', () => {
   let logic;
   before(() => {
     // create some mock helpers
-    const MockHelper = function(cementHelper) {
+    const MockHelper = function MockHelper(cementHelper) {
       return {
         ok: '1',
         cementHelper,
