@@ -5,11 +5,9 @@ require('sinon-as-promised');
 
 const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
+const inputJob = require('./run.sample.testdata.js');
 
-describe('BusinessLogics - Execution - Run - _process', function() {
-
-  const inputJob = require('./run.sample.testdata.js');
-
+describe('BusinessLogics - Execution - Run - _process', () => {
   let sandbox;
   let helper;
   let stubAcknowledgeMessage;
@@ -35,21 +33,20 @@ describe('BusinessLogics - Execution - Run - _process', function() {
   });
   afterEach(() => {
     sandbox.restore();
-  })
+  });
 
-  context('when everything ok', function() {
-
-    it('should emit done event on inputContext', function() {
+  context('when everything ok', () => {
+    it('should emit done event on inputContext', () => {
       const createdExecution = {
-        id: '1234567890'
+        id: '1234567890',
       };
       const matchingInstances = [
         { hostname: 'machine1' },
-        { hostname: 'machine2' }
+        { hostname: 'machine2' },
       ];
       const updatedExecution = {
         id: '1234567890',
-        instances: matchingInstances
+        instances: matchingInstances,
       };
       stubAcknowledgeMessage.resolves();
       stubCreateExecution.resolves(createdExecution);
@@ -62,22 +59,22 @@ describe('BusinessLogics - Execution - Run - _process', function() {
           sinon.assert.calledWith(stubAcknowledgeMessage, contextInputMock);
           sinon.assert.calledWith(stubCreateExecution, contextInputMock);
           sinon.assert.calledWith(stubGetMatchingInstances, contextInputMock);
-          sinon.assert.calledWith(stubUpdateExecution, contextInputMock, createdExecution, matchingInstances);
-          sinon.assert.calledWith(stubSendCommandToInstances, contextInputMock, updatedExecution);
-          sinon.assert.calledWith(stubEmit, 'done', contextInputMock.cementHelper.brickName, updatedExecution);
+          sinon.assert.calledWith(stubUpdateExecution, contextInputMock,
+            createdExecution, matchingInstances);
+          sinon.assert.calledWith(stubSendCommandToInstances, contextInputMock,
+            updatedExecution);
+          sinon.assert.calledWith(stubEmit, 'done', contextInputMock.cementHelper.brickName,
+            updatedExecution);
         });
-
     });
-
   });
 
-  context('when acknowledgeMessage reject error', function() {
-
-    it('should emit error event on inputContext', function() {
+  context('when acknowledgeMessage reject error', () => {
+    it('should emit error event on inputContext', () => {
       const err = {
         returnCode: 'error',
         brickName: 'cta-io',
-        response: new Error('Cannot acknowledge the message')
+        response: new Error('Cannot acknowledge the message'),
       };
       stubAcknowledgeMessage.rejects(err);
 
@@ -87,14 +84,12 @@ describe('BusinessLogics - Execution - Run - _process', function() {
           sinon.assert.calledWith(stubEmit, err.returnCode, err.brickName, err.response);
         });
     });
-
   });
 
-  context('when no matching instances found', function() {
-
-    it('should emit error event on inputContext', function() {
+  context('when no matching instances found', () => {
+    it('should emit error event on inputContext', () => {
       const createdExecution = {
-        id: '1234567890'
+        id: '1234567890',
       };
       const noMatchingInstancesError = new Error('No matching instances found');
       stubAcknowledgeMessage.resolves();
@@ -108,11 +103,10 @@ describe('BusinessLogics - Execution - Run - _process', function() {
           sinon.assert.calledWith(stubCreateExecution, contextInputMock);
           sinon.assert.calledWith(stubGetMatchingInstances, contextInputMock);
           sinon.assert.calledWith(stubSendErrorToEds, createdExecution.id,
-            noMatchingInstancesError.message)
+            noMatchingInstancesError.message);
           sinon.assert.calledWith(stubEmit, 'error', helper.cementHelper.brickName,
             noMatchingInstancesError);
         });
     });
-
   });
 });

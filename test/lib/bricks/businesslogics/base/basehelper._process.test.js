@@ -19,15 +19,15 @@ const DEFAULTCEMENTHELPER = {
   dependencies: {
     logger: DEFAULTLOGGER,
   },
-  createContext: function() {},
+  createContext: () => {},
 };
 
-describe('BusinessLogics - Base Helper - _process', function() {
+describe('BusinessLogics - Base Helper - _process', () => {
   let helper;
-  before(function() {
+  before(() => {
     helper = new Helper(DEFAULTCEMENTHELPER, DEFAULTLOGGER);
   });
-  context('when everything ok', function() {
+  context('when everything ok', () => {
     const inputJOB = {
       nature: {
         type: 'execution',
@@ -36,13 +36,13 @@ describe('BusinessLogics - Base Helper - _process', function() {
       payload: {},
     };
     const mockInputContext = new Context(DEFAULTCEMENTHELPER, inputJOB);
-    before(function() {
+    before(() => {
       sinon.stub(mockInputContext, 'emit');
       helper._process(mockInputContext);
     });
-    after(function() {
+    after(() => {
     });
-    it('should emit done event on inputContext', function() {
+    it('should emit done event on inputContext', () => {
       sinon.assert.calledWith(mockInputContext.emit, 'done', helper.cementHelper.brickName);
     });
   });
