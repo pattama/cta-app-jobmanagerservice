@@ -13,7 +13,7 @@ Contract:
 ```ruby
 {
     "nature": {
-        "type": "execution",
+        "type": "scenario",
         "quality": "run"
     },
     "payload": {
@@ -68,7 +68,7 @@ Example:
 ```ruby
 {
     "nature": {
-        "type": "execution",
+        "type": "scenario",
         "quality": "run"
     },
     "payload": {
