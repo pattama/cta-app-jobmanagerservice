@@ -36,7 +36,7 @@ describe('BusinessLogics - Execution - Run - sendErrorToEds', () => {
         sinon.assert.calledWith(stubRestCreateResult, sinon.match({
           executionId,
           testId: errorMessage,
-          status: 'failed',
+          status: 'inconclusive',
           index: 1,
         }));
         sinon.assert.calledWith(stubRestCreateState, sinon.match({

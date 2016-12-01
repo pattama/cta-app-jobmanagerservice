@@ -43,13 +43,15 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', () 
 
   context('when everything is ok', () => {
     it('should resolves the HTTP body', () => {
-      const result = {
+      const response = {
         status: 200,
-        data: [{ hostName: 'machine1' }],
+        data: {
+          result: [{ hostName: 'machine1' }],
+        },
       };
       const promise = instanceRequest.getMatchingInstances('matchingData');
-      contextMock.emit('done', brickName, result);
-      return expect(promise).to.eventually.equal(result.data);
+      contextMock.emit('done', brickName, response);
+      return expect(promise).to.eventually.equal(response.data.result);
     });
   });
 
