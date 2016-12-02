@@ -1,14 +1,18 @@
-# Job Manager Data Contracts
+# Job Manager DataService for Compass Test Automation
+[Readme](README.md) | [Rest API](RESTAPI.md) | [DataContract](DATACONTRACT.md) | [Document](DOCUMENTATION.md) | [Sequence Diagrams](https://www.lucidchart.com/documents/edit/d15cef2b-8b80-4ce0-8e2c-1f3deee1759c/0)
 
-## Input
+
+## Job Manager Data Contracts
+
+### Input
 * [Run a scenario](#run-a-scenario)
 
-## Output
+### Output
 * [Acknowledge a message](#acknowledge-a-message)
 * [Send a read message to agent](#send-a-read-message-to-agent)
 * [Send a run message to agent](#send-a-run-message-to-agent)
 
-### Run a scenario:
+#### Run a scenario:
 Contract:
 ```ruby
 {
@@ -134,7 +138,7 @@ Example:
 ```
 
 
-### Acknowledge a message
+#### Acknowledge a message
 Contract:
 ```ruby
 Contract:
@@ -161,7 +165,7 @@ Example:
 }
 ```
 
-### Send a read message to agent
+#### Send a read message to agent
 Contract:
 ```ruby
 {
@@ -199,7 +203,7 @@ Example:
 }
 ```
 
-### Send a run message to agent
+#### Send a run message to agent
 Contract:
 ```ruby
 {
