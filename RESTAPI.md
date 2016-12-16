@@ -4,7 +4,7 @@
 
 ## Job Manager Application Program Interface
 
-#### Rest API
+### Rest API
 * [Cancel an execution](#cancel-an-execution)
 * [Trigger execution timeout](#trigger-execution-timeout)
 
