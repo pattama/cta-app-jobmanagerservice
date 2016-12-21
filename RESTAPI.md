@@ -11,7 +11,7 @@
 #### Cancel an execution
 **Request**
 ```ruby
-POST /jobmanager/execution/:id/actions
+POST /jms/execution/:id/actions
 {
   "action": "cancel",
   "instances": [{
@@ -29,7 +29,7 @@ POST /jobmanager/execution/:id/actions
 #### Trigger execution timeout
 **Request**
 ```ruby
-POST /jobmanager/execution/:id/actions
+POST /jms/execution/:id/actions
 {
   "action": "timeout",
   "instances": [{

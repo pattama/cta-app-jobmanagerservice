@@ -17,7 +17,7 @@ Contract:
 ```ruby
 {
     "nature": {
-        "type": "scenario",
+        "type": "scenarios",
         "quality": "run"
     },
     "payload": {
@@ -72,7 +72,7 @@ Example:
 ```ruby
 {
     "nature": {
-        "type": "scenario",
+        "type": "scenarios",
         "quality": "run"
     },
     "payload": {
@@ -144,7 +144,7 @@ Contract:
 Contract:
 {
     "nature": {
-	"type": "message",
+	"type": "messages",
 	"quality": "acknowledge",
     },
     "payload": {
@@ -156,7 +156,7 @@ Example:
 ```ruby
 {
     "nature": {
-	"type": "message",
+	"type": "messages",
 	"quality": "acknowledge",
     },
     "payload": {
@@ -170,7 +170,7 @@ Contract:
 ```ruby
 {
     "nature": {
-	"type": "execution",
+	"type": "executions",
 	"quality": "read"
     },
     "payload": {
@@ -188,7 +188,7 @@ Example:
 ```ruby
 {
     "nature": {
-	"type": "execution",
+	"type": "executions",
 	"quality": "read"
     },
     "payload": {
@@ -208,7 +208,7 @@ Contract:
 ```ruby
 {
     "nature": {
-        "type": "execution",
+        "type": "executions",
         "quality": "run"
     },
     "payload": {
@@ -226,7 +226,7 @@ Example:
 ```ruby
 {
     "nature": {
-        "type": "execution",
+        "type": "executions",
         "quality": "run"
     },
     "payload": {
