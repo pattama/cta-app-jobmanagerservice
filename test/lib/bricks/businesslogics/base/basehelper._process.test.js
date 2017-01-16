@@ -1,6 +1,6 @@
 'use strict';
 
-const appRootPath = require('cta-common').root('cta-jobmanager');
+const appRootPath = require('cta-common').root('cta-app-jobmanagerdataservice');
 const sinon = require('sinon');
 const nodepath = require('path');
 

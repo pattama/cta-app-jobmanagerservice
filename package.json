@@ -1,5 +1,5 @@
 {
-  "name": "cta-jobmanager",
+  "name": "cta-app-jobmanagerdataservice",
   "version": "0.0.1",
   "description": "Job Manager Brick",
   "main": "lib/index.js",

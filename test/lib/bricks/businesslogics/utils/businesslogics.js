@@ -1,5 +1,5 @@
 'use strict';
-const appRootPath = require('cta-common').root('cta-jobmanager');
+const appRootPath = require('cta-common').root('cta-app-jobmanagerdataservice');
 const path = require('path');
 const FlowControlUtils = require('./flowcontrol');
 
