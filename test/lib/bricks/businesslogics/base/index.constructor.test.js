@@ -1,6 +1,6 @@
 'use strict';
 
-const appRootPath = require('cta-common').root('cta-jobmanager');
+const appRootPath = require('cta-common').root('cta-app-jobmanagerdataservice');
 const chai = require('chai');
 const expect = chai.expect;
 const nodepath = require('path');

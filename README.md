@@ -1,6 +1,6 @@
 # Job Manager Data Service for Compass Test Automation
-[![build status](https://git.sami.int.thomsonreuters.com/compass/cta-jobmanager/badges/master/build.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-jobmanager/commits/master)
-[![coverage report](https://git.sami.int.thomsonreuters.com/compass/cta-jobmanager/badges/master/coverage.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-jobmanager/commits/master)
+[![build status](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/badges/master/build.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/commits/master)
+[![coverage report](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/badges/master/coverage.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/commits/master)
 
 ## Summary
 * [Rest API](RESTAPI.md)
