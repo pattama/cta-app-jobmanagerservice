@@ -31,7 +31,7 @@ describe('BusinessLogics - JobManager - Messenger - acknowledgeMessage', () => {
   context('when contextMock emits done event', () => {
     it('should resolves the response', () => {
       const brickName = 'cta-io';
-      const response = {};
+      const response = ['a', 'b'];
 
       const promise = messenger.acknowledgeMessage(ackId);
       contextMock.emit('done', brickName, response);
@@ -43,7 +43,7 @@ describe('BusinessLogics - JobManager - Messenger - acknowledgeMessage', () => {
       }).then(() => {
         sinon.assert.calledWith(stubCreateContext, {
           nature: {
-            type: 'message',
+            type: 'messages',
             quality: 'acknowledge',
           },
           payload: {
