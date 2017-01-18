@@ -50,7 +50,7 @@ describe('BusinessLogics - JobManager - Messenger - sendOneMessageToOneQueue', (
           },
           payload: {
             queue,
-            message,
+            content: message,
             autoDelete: options.autoDelete,
             expires: options.expires,
           },
