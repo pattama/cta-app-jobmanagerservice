@@ -45,12 +45,12 @@ describe('BusinessLogics - JobManager - Messenger - sendOneMessageToOneQueue', (
       }).then(() => {
         sinon.assert.calledWith(stubCreateContext, {
           nature: {
-            type: 'message',
+            type: 'messages',
             quality: 'produce',
           },
           payload: {
             queue,
-            message,
+            content: message,
             autoDelete: options.autoDelete,
             expires: options.expires,
           },
