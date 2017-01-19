@@ -8,6 +8,10 @@ Welcome to Job Manager Data Service's open source codebase and curriculum!
 
 Job Manager Data Service is a friendly open source community where you learn to code and help nonprofits.You start by working through our self-paced, browser-based full stack JavaScript curriculum.
 
+##What Job Manager Data Service can support you?
+xxxxxxxx
+
+
 ### By working through our curriculum, you can earn three certifications:
 ##### 1. Front End Certification
 The first section will teach you the basics of how webpages work and also introduce you to JavaScript programming.
