@@ -1,4 +1,7 @@
 # Job Manager Data Service for Compass Test Automation
+[![build status](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmangerdataservice/badges/master/build.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmangerdataservice/commits/master)
+[![coverage report](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmangerdataservice/badges/master/coverage.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmangerdataservice/commits/master)
+
 
 Welcome to Job Manager Data Service's open source codebase and curriculum!
 =======================
