@@ -66,8 +66,8 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', () 
         properties: {
           hostname: 'mymachine',
           os: 'Windows7',
-        }
-      }
+        },
+      };
       instanceRequest.getMatchingInstances(matchingData);
 
       const data = {
@@ -79,7 +79,7 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', () 
           method: 'GET',
           url: 'whatever.com?hostname=mymachine&properties.os=Windows7',
         },
-      }
+      };
       sinon.assert.calledWith(createContextStub, data);
     });
   });
@@ -89,8 +89,8 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', () 
       const matchingData = {
         properties: {
           os: 'Windows7',
-        }
-      }
+        },
+      };
       instanceRequest.getMatchingInstances(matchingData);
 
       const data = {
@@ -102,7 +102,7 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', () 
           method: 'GET',
           url: 'whatever.com?properties.os=Windows7',
         },
-      }
+      };
       sinon.assert.calledWith(createContextStub, data);
     });
   });

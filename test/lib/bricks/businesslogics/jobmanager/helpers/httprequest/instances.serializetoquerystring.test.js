@@ -10,7 +10,6 @@ const InstanceRequest = require(instanceRequestPath);
 
 
 describe('BusinessLogics - JobManager - httprequest - serializeToQueryString', () => {
-
   context('when matchingData is nested object', () => {
     it('should resolves the HTTP body', () => {
       const matchingData = {
@@ -19,11 +18,12 @@ describe('BusinessLogics - JobManager - httprequest - serializeToQueryString', (
           version: {
             major: 1,
             minor: 2,
-          }
-        }
-      }
+          },
+        },
+      };
       const queryString = InstanceRequest.serializeToQueryString(matchingData);
-      expect(queryString).equals('properties.os=Windows7&properties.version.major=1&properties.version.minor=2');
+      expect(queryString).equals('properties.os=Windows7&' +
+        'properties.version.major=1&properties.version.minor=2');
     });
   });
 
@@ -32,8 +32,8 @@ describe('BusinessLogics - JobManager - httprequest - serializeToQueryString', (
       const matchingData = {
         properties: {
           softs: ['Chrome', 'NodeJS'],
-        }
-      }
+        },
+      };
       const queryString = InstanceRequest.serializeToQueryString(matchingData);
       expect(queryString).equals('properties.softs=Chrome,NodeJS');
     });
