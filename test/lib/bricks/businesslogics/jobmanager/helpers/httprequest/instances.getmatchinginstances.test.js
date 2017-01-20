@@ -12,8 +12,6 @@ const FlowControlUtils = require('../../../utils/flowcontrol');
 const BusinessLogicsUtils = require('../../../utils/businesslogics');
 const instanceRequestPath = path.join(BusinessLogicsUtils.HelperPath, '/httprequest/instances');
 const configHelperPath = path.join(BusinessLogicsUtils.HelperPath, '/helpers/config_helper.js');
-const InstanceRequest = require(instanceRequestPath);
-
 
 describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', () => {
   const brickName = 'cta-brick-request';
@@ -21,19 +19,19 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', () 
   let sandbox;
   let instanceRequest;
   let contextMock;
+  let createContextStub;
   beforeEach(() => {
     mock(configHelperPath, {
-      getInstancesUrl: () => {
-        'whatever.com';
-      },
+      getInstancesUrl: () => 'whatever.com',
     });
     sandbox = sinon.sandbox.create();
     contextMock = new EventEmitter();
     contextMock.publish = sinon.stub();
 
+    const InstanceRequest = mock.reRequire(instanceRequestPath);
     instanceRequest = new InstanceRequest(FlowControlUtils.defaultCementHelper,
       FlowControlUtils.defaultCementHelper);
-    sandbox.stub(instanceRequest.cementHelper, 'createContext')
+    createContextStub = sandbox.stub(instanceRequest.cementHelper, 'createContext')
       .returns(contextMock);
   });
   afterEach(() => {
@@ -59,6 +57,53 @@ describe('BusinessLogics - JobManager - httprequest - getMatchingInstances', () 
     it('should rejects an error', () => {
       const promise = instanceRequest.getMatchingInstances(undefined);
       return expect(promise).to.eventually.rejectedWith('matchingQuery is not define or empty');
+    });
+  });
+
+  context('when matchingData has properties.hostname', () => {
+    it('should serialize matchingData to queryString correctly', () => {
+      const matchingData = {
+        properties: {
+          hostname: 'mymachine',
+          os: 'Windows7',
+        },
+      };
+      instanceRequest.getMatchingInstances(matchingData);
+
+      const data = {
+        nature: {
+          type: 'request',
+          quality: 'exec',
+        },
+        payload: {
+          method: 'GET',
+          url: 'whatever.com?hostname=mymachine&properties.os=Windows7',
+        },
+      };
+      sinon.assert.calledWith(createContextStub, data);
+    });
+  });
+
+  context('when matchingData has not properties.hostname', () => {
+    it('should serialize matchingData to queryString correctly', () => {
+      const matchingData = {
+        properties: {
+          os: 'Windows7',
+        },
+      };
+      instanceRequest.getMatchingInstances(matchingData);
+
+      const data = {
+        nature: {
+          type: 'request',
+          quality: 'exec',
+        },
+        payload: {
+          method: 'GET',
+          url: 'whatever.com?properties.os=Windows7',
+        },
+      };
+      sinon.assert.calledWith(createContextStub, data);
     });
   });
 
