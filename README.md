@@ -6,14 +6,11 @@
 ## Welcome to Job Manager Data Service's open source codebase
 
 Please tell me a little about Job Manager Data Service?
-
-
-
-
-
-
-
-
+-
+-
+-
+-
+-
 
 
 
