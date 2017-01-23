@@ -3,42 +3,20 @@
 [![coverage report](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmangerdataservice/badges/master/coverage.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmangerdataservice/commits/master)
 
 
-Welcome to Job Manager Data Service's open source codebase and curriculum!
+## Welcome to Job Manager Data Service's open source codebase
 =======================
 
-Job Manager Data Service is a friendly open source community where you learn to code and help nonprofits.You start by working through our self-paced, browser-based full stack JavaScript curriculum.
-
-##What Job Manager Data Service can support you?
-xxxxxxxx
+Please tell me a little about Job Manager Data Service?
 
 
-### By working through our curriculum, you can earn three certifications:
-##### 1. Front End Certification
-The first section will teach you the basics of how webpages work and also introduce you to JavaScript programming.
-
-Skills you'll practice include `HTML`, `CSS`, `JavaScript`, `JASON` and `Bootstrap`.
 
 
-##### 2. Back End Certification
-The second section introduces you to back end development using `Node.js`, `Express,` and `MongoDB`. 
-It also teaches you about the important concept of source control using `Git`.
 
 
-##### 3. Full Stack Certification
-The third section is where you'll get **real-world experience** by working on projects for **nonprofits**.
 
----
 
-This code is running live at [CTA-OSS.com](https://www.). We also have [Gitter chat rooms](https://git.sami.int.thomsonreuters.com/compass/cta), a [wiki knowledgebase](https://forum.freecodecamp.com/c/wiki)
+You can go to [wiki knowledgebase](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/home) for understand more structure, parameter of Job Manager Data Services.
 
-Contributing
-------------
 
-We welcome pull requests from freeCodeCamp campers (our students) and seasoned JavaScript developers alike! Please follow [these steps](CONTRIBUTING.md) to contribute.
+This code is running live at [CTA-OSS.com](https://www.). We also have [Gitter chat rooms](https://git.sami.int.thomsonreuters.com/compass/cta) 
 
-## Summary
-* [Rest API](RESTAPI.md)
-* [DataContract](DATACONTRACT.md)
-* [Document](DOCUMENTATION.md)
-* [Sequence Diagrams](https://www.lucidchart.com/documents/edit/d15cef2b-8b80-4ce0-8e2c-1f3deee1759c)
-* [Configuration](/lib/apps/main/config.js#L94)
