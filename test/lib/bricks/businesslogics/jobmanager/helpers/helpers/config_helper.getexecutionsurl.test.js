@@ -19,14 +19,5 @@ describe('BusinessLogics - JobManager - config_helper - getExecutionsUrl', () =>
       const url = configHelper.getExecutionsUrl();
       expect(url).equal('executions-data-services.com');
     });
-
-    it('should returns executionsUrl without ending slash', () => {
-      const config = {
-        executionsUrl: 'executions-data-services.com/',
-      };
-      configHelper.setConfig(config);
-      const url = configHelper.getExecutionsUrl();
-      expect(url).equal('executions-data-services.com');
-    });
   });
 });
