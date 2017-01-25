@@ -24,9 +24,9 @@ describe('BusinessLogics - JobManager - Messenger - getAllMessagesFromQueue', ()
 
   context('when contextMock emits done event', () => {
     it('should resolves the response', () => {
-      stubMessagingGet.onCall(0).resolves({ result: { json: 1 } });
-      stubMessagingGet.onCall(1).resolves({ result: { json: 2 } });
-      stubMessagingGet.onCall(2).resolves({ result: { json: null } });
+      stubMessagingGet.onCall(0).resolves({ result: { content: 1 } });
+      stubMessagingGet.onCall(1).resolves({ result: { content: 2 } });
+      stubMessagingGet.onCall(2).resolves({ result: { content: null } });
 
       const promise = messenger.getAllMessagesFromQueue(queue);
       return expect(promise).to.eventually.deep.equal([1, 2])
