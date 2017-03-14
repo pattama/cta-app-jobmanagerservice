@@ -9,7 +9,8 @@
     "codecoverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive test/lib/bricks/businesslogics",
     "all": "npm run lint && npm run codecoverage",
     "gitlab-ci": "npm run all",
-    "docs": "jsdoc2md \"lib/**/*.js\" > DOCUMENTATION.md && jsdoc --readme README.md lib -r -d docs"
+    "docs": "jsdoc2md \"lib/**/*.js\" > DOCUMENTATION.md && jsdoc --readme README.md lib -r -d docs",
+    "start": "node lib/apps/main/app.js"
   },
   "engines": {
     "node": "6.9.5"
