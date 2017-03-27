@@ -18,10 +18,10 @@
 JobManager Data Service (JMS) performing as a brick between CTA-Execution-DataService(EDS) and CTA-Agent. JMS will receive commands from EDS. Then JMS will transform commands and send them to CTA-Agent(s). Many agents may receive these commands according to `mode` field.
 
 ### Features
-  * Mono mode: send a command to single CTA-Agent. If there are many CTA-Agents matching the condition, first CTA-Agent will be chosen.
-  * Stress mode: send a command to matching CTA-Agent. If there are many CTA-Agents matching the condition, JMS will send the same command to all.
-  * Group mode: send a command to single CTA-Agent. If there are many CTA-Agents matching the condition, First, not-busy, CTA-Agent will pick up the command.
-  * Parallel mode: send many jobs to matching CTA-Agent. If there are many CTA-Agents matching the condition, Not-busy CTA-Agent(s) will help each other picking up the commands.
+  * __Mono mode__: send a command to single CTA-Agent. If there are many CTA-Agents matching the condition, first CTA-Agent will be chosen.
+  * __Stress mode__: send a command to matching CTA-Agent. If there are many CTA-Agents matching the condition, JMS will send the same command to all.
+  * __Group mode__: send a command to single CTA-Agent. If there are many CTA-Agents matching the condition, First, not-busy, CTA-Agent will pick up the command.
+  * __Parallel mode__: send many jobs to matching CTA-Agent. If there are many CTA-Agents matching the condition, Not-busy CTA-Agent(s) will help each other picking up the commands.
   
 
 You can check more [feature guide](https://git.sami.int.thomsonreuters.com/compass/cta/blob/master/features.md) for a list of all features provided by CTA-OSS.
