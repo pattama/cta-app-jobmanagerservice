@@ -48,7 +48,7 @@ You can follow [these steps](https://git.sami.int.thomsonreuters.com/compass/cta
 ### More Information
 Our service is composed of different components working together to schedule, run, collect tests results and more. You can find additional information for more understand in Execution Data Service.
 We also cover in detail :
-* The [Rest API](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/restapi) is composed of multiple REST service to perform actions on CTA.
+* The [Rest API](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/rest%20api) is composed of multiple REST service to perform actions on CTA.
 * A [DataContract](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/datacontract) is a formal agreement between a bricks.
 * The [Document](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/document) associated with a software project and the system being.
 * A [Sequence Diagrams](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/sequence%20diagram) is an interaction diagram that shows how objects operate with one another and in what order.
