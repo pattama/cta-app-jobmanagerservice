@@ -1,40 +1,58 @@
-# Job Manager Data Service for Compass Test Automation
-[![build status](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/badges/master/build.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/commits/master) [![coverage report](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/badges/master/coverage.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/commits/master)
+# JobManager Data Service for Compass Test Automation
+
+[![build status](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/badges/master/build.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/commits/master)[![coverage report](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/badges/master/coverage.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/commits/master)
+------
+* General Overview
+  * [Overview](#overview)
+  * [Features](#features)
+* Getting Started
+  * [Install](#Getting-Started)
+* Development Guide
+  * [Contributing](#contributing)
+  * [More Information](#more-information)
+  
 ------
 
-* [Overview of Job Manager Data Service ](#Overview of Job Manager Data Service)
-* [What is Job Manager Data Service's configuration and how can I find it?](#What is Job Manager Data Service's configuration and how can I find it?)
-* [What is technology stack for Job Manager Data Service](#What is technology stack for Job Manager Data Service?)
-* [Where can I find information about Job Manager Data Service component?](#Where can I find information about Job Manager Data Service component?)
-* [How I can contribute to my code?](#How I can contribute to my code?)
+## General Overview
+### Overview
+JobManager Data Service (JMS) performing as a brick between CTA-Execution-DataService(EDS) and CTA-Agent. JMS will receive commands from EDS. Then JMS will transform commands and send them to CTA-Agent(s). Many agents may receive these commands according to `mode` field.
 
-
-
-
-### Overview of Job Manager Data Service
-Please tell me a little about Job Manager Data Service
-
-
-### What is Job Manager Data Service's configuration and how can I find it?
-A [Configuration](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/configuration) is the agreement of functional units according to their nature.
-
-
-### What is technology stack for Job Manager Data Service?
- 1. Front End skills required include `HTML`, `CSS`, `JavaScript`, `JSON`. 
- 2. Back End development using `Node.js`, `Express,` and `MongoDB`. It also important concept of source control using `Git`.
+### Features
+  * __Mono mode__: send a command to single CTA-Agent. If there are many CTA-Agents matching the condition, first CTA-Agent will be chosen.
+  * __Stress mode__: send a command to matching CTA-Agent. If there are many CTA-Agents matching the condition, JMS will send the same command to all.
+  * __Group mode__: send a command to single CTA-Agent. If there are many CTA-Agents matching the condition, First, not-busy, CTA-Agent will pick up the command.
+  * __Parallel mode__: send many commands to matching CTA-Agent. If there are many CTA-Agents matching the condition, Not-busy CTA-Agent(s) will help each other picking up the commands.
   
 
-### Where can I find information about Job Manager Data Service component?
-You can go to [wiki knowledgebase](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/home) for additional information on Job Manager Data Service.
+You can check more [feature guide](https://git.sami.int.thomsonreuters.com/compass/cta/blob/master/features.md) for a list of all features provided by CTA-OSS.
 
+------
 
-### How I can contribute to my code?
+## Getting Started
+The easiest way to get started is to clone the repository:
+```ruby
+git clone git@git.sami.int.thomsonreuters.com:compass/cta-app-jobmanagerdataservice.git
+```
+Then install NPM dependencies:
+```ruby
+npm install
+```
+To build, be sure you have [node](https://nodejs.org/en/) installed.
+
+------
+
+## Development Guide
+### Contributing
 You can follow [these steps](https://git.sami.int.thomsonreuters.com/compass/cta/blob/master/contributing.md) to contribute.
 
-
-
+### More Information
+Our service is composed of different components working together to schedule, run, collect tests results and more. You can find additional information for more understand in Execution Data Service.
+We also cover in detail :
+* The [Rest API](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/rest%20api) is composed of multiple REST service to perform actions on CTA.
+* A [DataContract](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/datacontract) is a formal agreement between a bricks.
+* The [Document](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/document) associated with a software project and the system being.
+* A [Sequence Diagrams](https://git.sami.int.thomsonreuters.com/compass/cta-app-jobmanagerdataservice/wikis/sequence%20diagram) is an interaction diagram that shows how objects operate with one another and in what order.
 
 ------
 
 This code is running live at [CTA-OSS](https://www.). We also have [CTA Central Document](https://git.sami.int.thomsonreuters.com/compass/cta) 
-
