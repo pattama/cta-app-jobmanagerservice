@@ -37,6 +37,7 @@ describe('BusinessLogics - Execution - Run - createExecution', () => {
         .then(() => {
           sinon.assert.calledWith(stubRestCreateExecution, {
             scenarioId: inputJob.payload.scenario.id,
+            scenarioData: inputJob.payload.scenario,
             userId: inputJob.payload.user.id,
             requestTimestamp: inputJob.payload.requestTimestamp,
             pendingTimeout: inputJob.payload.pendingTimeout,
