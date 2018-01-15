@@ -25,7 +25,7 @@ For detail, please go to our [**CTA Main Repository**](https://github.com/thomso
   * [Contributing](#contributing)
   * [More Information](#more-information)
 
-## Getting Started
+## Getting Start
 
 ### Prerequisites
  1. Front End skills required include `HTML`, `CSS`, `JavaScript`, `JSON`. 
