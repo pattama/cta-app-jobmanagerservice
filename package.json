@@ -7,7 +7,7 @@
     "lint": "eslint --ignore-path .gitignore lib test",
     "test": "mocha -R spec --recursive test",
     "codecoverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive test/lib/bricks/businesslogics",
-    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && codecov",
+    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec --recursive test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && codecov",
     "all": "npm run lint && npm run codecoverage",
     "gitlab-ci": "npm run all",
     "docs": "jsdoc2md \"lib/**/*.js\" > DOCUMENTATION.md && jsdoc --readme README.md lib -r -d docs"
