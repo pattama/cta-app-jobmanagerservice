@@ -1,7 +1,7 @@
 # cta-app-jobmanagerservice
-[![Build Status](https://travis-ci.org/thomsonreuters/cta-app-jobmanagerdataservice.svg?branch=master)](https://travis-ci.org/thomsonreuters/cta-app-jobmanagerdataservice)
-[![Coverage Status](https://coveralls.io/repos/github/thomsonreuters/cta-app-jobmanagerdataservice/badge.svg?branch=master)](https://coveralls.io/github/thomsonreuters/cta-app-jobmanagerdataservice?branch=master)
-[![codecov](https://codecov.io/gh/thomsonreuters/cta-app-jobmanagerdataservice/branch/master/graph/badge.svg)](https://codecov.io/gh/thomsonreuters/cta-app-jobmanagerdataservice)
+[![Build Status](https://travis-ci.org/thomsonreuters/cta-app-jobmanagerservice.svg?branch=master)](https://travis-ci.org/thomsonreuters/cta-app-jobmanagerservice)
+[![Coverage Status](https://coveralls.io/repos/github/thomsonreuters/cta-app-jobmanagerservice/badge.svg?branch=master)](https://coveralls.io/github/thomsonreuters/cta-app-jobmanagerservice?branch=master)
+[![codecov](https://codecov.io/gh/thomsonreuters/cta-app-jobmanagerservice/branch/master/graph/badge.svg)](https://codecov.io/gh/thomsonreuters/cta-app-jobmanagerservice)
 
 **JobManager Data Service Application (JMS)**  for Compass Test Automation, implementing CTA-OSS Framework
 
